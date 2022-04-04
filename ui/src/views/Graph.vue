@@ -31,7 +31,7 @@
     },
     data() {
       const data = [];
-      for (let i = 0; i < 360; i += 5) {
+      for (let i = 0; i < 360; i ++) {
         data.push(i % 45 == 0 ? `${i}°` : "")
       }
 
@@ -95,16 +95,14 @@
       setInterval(() => {
         fetch("/data").then(x => x.json())
           .then(jdata => {
-            const ndata = [ ];
-            for (let i = 0; i < (jdata.length - 5); i += 5)
+            for (let i = 1; i < (jdata.length - 1); i++)
             {
-              const sum = jdata.slice(i, i + 5).reduce((a, b) => a + b, 0);
-              const avg = sum / 5;
-              console.error(i, avg, sum)
-              ndata.push(avg); 
+              if ((jdata[i] > jdata[i - 1] + 100) && (jdata[i] > jdata[i + 1] + 100))
+              {
+                jdata[i] = (jdata[i - 1] + jdata[i + 1]) / 2;
+              }
             }
-            console.warn(ndata)
-            this.testData.datasets[0].data = ndata;
+            this.testData.datasets[0].data = jdata;
           })
       }, 500);
 
