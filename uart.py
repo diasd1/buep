@@ -25,7 +25,7 @@ class LiDARCurrentData:
             if angle >= 360:
                 angle -= 360
             
-            if dist > 0.0:
+            if dist > 20.0:
                 self._dist[angle] = dist
 
 

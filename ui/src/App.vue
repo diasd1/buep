@@ -4,8 +4,9 @@ import { RouterLink, RouterView } from "vue-router";
 
 <template>
   <div id="appWrapper">
-    <div class="header">
-        <RouterLink class="rLink" to="/">Graph</RouterLink>
+    <div class="header">        
+        <RouterLink class="rLink" to="/">Home</RouterLink>
+        <RouterLink class="rLink" to="/graph">Graph</RouterLink>
         <RouterLink class="rLink" to="/table">Table</RouterLink>
     </div>
     <div class="view">
