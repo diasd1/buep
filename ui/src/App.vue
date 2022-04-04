@@ -7,7 +7,6 @@ import { RouterLink, RouterView } from "vue-router";
     <div class="header">
         <RouterLink class="rLink" to="/">Graph</RouterLink>
         <RouterLink class="rLink" to="/table">Table</RouterLink>
-        <RouterLink class="rLink" to="/download">Export</RouterLink>
     </div>
     <div class="view">
         <RouterView />
@@ -16,6 +15,22 @@ import { RouterLink, RouterView } from "vue-router";
 </template>
 
 <style lang="scss">
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
+
+:root {
+    --light-background: #21262a;
+    --text-main: #fff;
+    --default-container-background: #16191c;
+    --disabled: #8e92a3;
+    --blue: #607cd8;
+    --red: #dc0000;
+    --green: #64aa67;
+    --border: #2a3036;
+
+    --font-family: 'Poppins', sans-serif;
+}
+
+
 html,
 body {
     margin: 0;
@@ -23,12 +38,18 @@ body {
     width: 100%;
     height: 100%;
     position: relative;
+    background: var(--default-container-background);
 }
 
 body {
     padding: 10px;
     width: calc(100% - 20px);
     height: calc(100% - 20px);
+
+    * {
+        font-family: var(--font-family);
+        color: var(--text-main);
+    }
 }
 
 #appWrapper,
@@ -49,15 +70,15 @@ body {
         justify-content: center;
 
         .rLink {
-            color: black;
+            color: var(--text-main);
             text-decoration: none;
 
             &.router-link-active {
-                color: green;
+                color: var(--red);
             }
 
             &:not(:last-child) {
-                border-right: 1px solid grey;
+                border-right: 1px solid var(--border);
                 padding: 0px 10px;
             }
 

@@ -1,5 +1,6 @@
 import math
 from enum import Enum
+from typing import List
 
 class LiDARMessageState(Enum):
     Header = "header"
@@ -15,12 +16,17 @@ class LiDARCurrentData:
     def __init__(self) -> None:
         self._dist = [ 0.0 for _ in range(360) ]
 
-    def update(self, data, startAngle, endAngle):
+    def update(self, data: List[float], startAngle, endAngle):
         angleRange = abs(endAngle - startAngle)
         for index, dist in enumerate(data):
-            angle = math.floor(angleRange / len(data) * index)
-            #print(angle, dist)
-            self._dist[angle] = dist
+            angCorrect = 0 if dist == 0.0 else math.atan(21.8 * (155.3 - dist) / (155.3 * dist))
+            
+            angle = math.floor(angCorrect + startAngle + angleRange / len(data) * index)
+            if angle >= 360:
+                angle -= 360
+            
+            if dist > 0.0:
+                self._dist[angle] = dist
 
 
 class LiDARMessage:
