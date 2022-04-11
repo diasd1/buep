@@ -1,22 +1,35 @@
 <template>
   <div class="home">
-    <h1>curious<span class="accent">LiDAR</span></h1>
-    <h3>A project realised by David Dias Horta and Paul Meier</h3>
-    <p></p>
-    <div class="button"><div class="buttonBack"></div><RouterLink class="link" to="/graph">Get Started!</RouterLink></div>
+    <div class="upperHome">
+      <h1>curious<span class="accent">LiDAR</span></h1>
+      <div class="button"><RouterLink class="link" to="/graph">Get Started!</RouterLink></div>
+    </div>
   </div>
 </template>
 <style lang="scss" scoped>
+  .justifyBottom {
+    justify-self: flex-end;
+  }
+
   .home {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: calc(100vh - 25px - 10px);
+    height: 100%;
 
     h1 {
-      font-size: 3em;
+      font-size: 5em;
     }
+  }
+
+  .upperHome {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
   }
 
   span.accent {
@@ -24,39 +37,50 @@
   }
 
   .button {
-    z-index: 0;
+    z-index: 1;
     position: relative;
-    width: 200px;
-    height: 25px;
     text-align: center;
     padding: 20px;
     
-    .buttonBack {
+    .link::after {
+      content: '';
       position: absolute;
-      top: 0;
+      bottom: 0;
       left: 0;
       width: 100%;
-      height: 100%;
+      height: 2px;
       z-index: 0;
       background: var(--red);
       transform: scaleX(0);
-      transition: 1s;
-    }
-
-    &:hover {
-      .buttonBack {
-        transform: scaleX(1);
-      }
-
-      cursor: pointer;
+      opacity: 0;
+      transition: 400ms;
     }
 
     a.link {
-      position: fixed;
+      position: relative;
       z-index: 10 !important;
       color: var(--text-main);
       left: 0;
       right: 0;
+      font-size: 1.5em;
+      text-decoration: none;
+      transition: 400ms;
+      text-transform: uppercase;
+    }
+
+    &:hover {
+      .link::after {
+        opacity: 1;
+        transform: scaleX(1);
+      }
+
+      .link {
+        color: var(--red);
+        font-weight: bold;
+        font-size: 2em;
+      }
+
+      cursor: pointer;
     }
   }
 </style>

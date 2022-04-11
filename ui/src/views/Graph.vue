@@ -1,7 +1,14 @@
 <template>
   <div class="wrapper">
-    <input type="number" v-model="maxValue" />
-    <RadarChart id="chart" :chartData="testData" :options="options" />
+    <div class="input">
+      <div class="wrap">
+        <label>Max. Distance [mm]:</label>
+        <input type="number" v-model="maxValue" />
+      </div>
+    </div>
+    <div class="output">
+      <RadarChart id="chart" :chartData="testData" :options="options" />
+    </div>
   </div>
 </template>
 
@@ -26,13 +33,15 @@
     },
     watch: {
       maxValue() {
-        this.options.scale.max = this.maxValue;
+        this.options.scale.max = this.maxValue || 1;
       }
     },
     data() {
       const data = [];
+      const labels = [];
       for (let i = 0; i < 360; i ++) {
-        data.push(i % 45 == 0 ? `${i}°` : "")
+        labels.push(i % 45 == 0 ? `${i}°` : "");
+        data.push(i);
       }
 
       const maxValue = 500;
@@ -78,7 +87,7 @@
       }
 
       const testData = {
-        labels: data,
+        labels,
         datasets: [{
           label: 'LiDAR',
           data,
@@ -92,7 +101,9 @@
         }],
       };
 
-      setInterval(() => {
+      const update = () => {
+        if (!this.$router.currentRoute.value.path.includes("graph")) { return; }
+
         fetch("/data").then(x => x.json())
           .then(jdata => {
             for (let i = 1; i < (jdata.length - 1); i++)
@@ -104,10 +115,13 @@
             }
             this.testData.datasets[0].data = jdata;
           })
-      }, 500);
+
+        setTimeout(update, 500);
+      }
+      update();
 
       return {
-        testData, options, maxValue
+        testData, options, maxValue, chartRotation: 0
       };
     },
   });
@@ -116,7 +130,7 @@
 <style lang="scss" scoped>
   #chart {
     width: 100%;
-    height: 90vh;
+    height: 100%;
   }
 
   input {
@@ -130,6 +144,34 @@
 
     &:focus {
       outline: none;
+    }
+  }
+
+  .wrapper {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+
+    .output {
+      position: relative;
+      height: 100%;
+      width: 100%;
+      flex: 1;
+    }
+
+    .input {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+
+      .wrap {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        width: 25%;
+      }
     }
   }
 </style>

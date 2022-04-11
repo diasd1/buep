@@ -17,10 +17,15 @@ export default defineComponent({
             data.push(360 - i)
         }
 
-        setInterval(() => {
-        fetch("/data").then(x => x.json())
-          .then(jdata => this.distances = jdata)
-      }, 500);
+        const update = () => {
+            if (!this.$router.currentRoute.value.path.includes("table")) { return; }
+
+            fetch("/data").then(x => x.json())
+                .then(jdata => this.distances = jdata)
+
+            setTimeout(update, 500);
+        }
+        update();
 
         return {
             distances: data
@@ -34,6 +39,9 @@ export default defineComponent({
         display: flex;
         flex-direction: column;
         align-items: center;
+        height: 100%;
+        overflow-x: auto;
+        max-height: var(--max-container-height);
 
         .row {
             width: 50%;
