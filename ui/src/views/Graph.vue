@@ -4,6 +4,8 @@
       <div class="wrap">
         <label>Max. Distance [mm]:</label>
         <input type="number" v-model="maxValue" />
+        {{chartRotation >= 180 ? (chartRotation - 180) : chartRotation + 180}}°
+        <img @click="chartRotation += chartRotation < 360 ? 90 : -270" class="clickable" src="/src/assets/rotate.svg" />
       </div>
     </div>
     <div class="output">
@@ -34,13 +36,38 @@
     watch: {
       maxValue() {
         this.options.scale.max = this.maxValue || 1;
+      },
+      chartRotation() {
+        const labels = [ ];
+        for (let i = 0; i < 360; i ++) {
+          labels.push(this.parseChartRotationLabel(this.chartRotation, i));
+        }
+
+        this.testData.labels = labels;
+      }
+    },
+    methods: {
+      parseChartRotationLabel(chartRotation, i) {
+        if (i % 45 !== 0)
+        {
+          return "";
+        }
+
+        chartRotation += 180;
+        chartRotation -= chartRotation >= 360 ? 360 : 0;
+
+        chartRotation = 360 - chartRotation
+
+        return `${(i + chartRotation) < 360 ? (i + chartRotation) : (chartRotation + i - 360)}°`;
       }
     },
     data() {
       const data = [];
       const labels = [];
+      const chartRotation = 180;
+
       for (let i = 0; i < 360; i ++) {
-        labels.push(i % 45 == 0 ? `${i}°` : "");
+        labels.push(this.parseChartRotationLabel(chartRotation, i));
         data.push(i);
       }
 
@@ -113,7 +140,11 @@
                 jdata[i] = (jdata[i - 1] + jdata[i + 1]) / 2;
               }
             }
-            this.testData.datasets[0].data = jdata;
+
+            const jdata2 = jdata.splice(0, this.chartRotation);
+            jdata.push(...jdata2);
+            
+            this.testData.datasets[0].data = jdata.reverse();
           })
 
         setTimeout(update, 500);
@@ -121,7 +152,7 @@
       update();
 
       return {
-        testData, options, maxValue, chartRotation: 0
+        testData, options, maxValue, chartRotation
       };
     },
   });
@@ -131,6 +162,12 @@
   #chart {
     width: 100%;
     height: 100%;
+  }
+
+  img.clickable {
+    &:hover {
+      cursor: pointer;
+    }
   }
 
   input {
