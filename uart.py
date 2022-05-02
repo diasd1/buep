@@ -61,31 +61,30 @@ class LiDARMessage:
         #print("(MSB)", byte)
         self._byteCount = 0
 
-        match self._state:
-            case LiDARMessageState.Header:
-                if self._lastByte == 170 and byte == 85:
-                    self._state = LiDARMessageState.TypeAndQuantity
-            case LiDARMessageState.TypeAndQuantity:
-                self._quantity = byte
-                freq = (self._lastByte >> 1) / 10
-                #print("freq", freq)
-                #print("type", self._lastByte & 1)
-                self._state = LiDARMessageState.StartAngle
-            case LiDARMessageState.StartAngle:
-                self._startAngle = ((self._lastByte + byte * 255) >> 1) / 64
-                self._state = LiDARMessageState.EndAngle
-            case LiDARMessageState.EndAngle:
-                self._endAngle = ((self._lastByte + byte * 255) >> 1) / 64
-                self._state = LiDARMessageState.CheckCode
-            case LiDARMessageState.CheckCode:
-                self._state = LiDARMessageState.Data
-                self._dataCount = 0
-            case LiDARMessageState.Data:
-                self._data.append((self._lastByte + byte * 255) / 4)
-                if len(self._data) >= self._quantity:
-                    #print(f"quantity={self._quantity} start={self._startAngle}° end={self._endAngle}° data={self._data}")
-                    self._currentData.update(self._data, self._startAngle, self._endAngle)
-                    self._data = [ ]
-                    self._state = LiDARMessageState.Nought
+        if self._state == LiDARMessageState.Header:
+            if self._lastByte == 170 and byte == 85:
+                self._state = LiDARMessageState.TypeAndQuantity
+        if self._state == LiDARMessageState.TypeAndQuantity:
+            self._quantity = byte
+            freq = (self._lastByte >> 1) / 10
+            #print("freq", freq)
+            #print("type", self._lastByte & 1)
+            self._state = LiDARMessageState.StartAngle
+        if self._state == LiDARMessageState.StartAngle:
+            self._startAngle = ((self._lastByte + byte * 255) >> 1) / 64
+            self._state = LiDARMessageState.EndAngle
+        if self._state == LiDARMessageState.EndAngle:
+            self._endAngle = ((self._lastByte + byte * 255) >> 1) / 64
+            self._state = LiDARMessageState.CheckCode
+        if self._state == LiDARMessageState.CheckCode:
+            self._state = LiDARMessageState.Data
+            self._dataCount = 0
+        if self._state == LiDARMessageState.Data:
+            self._data.append((self._lastByte + byte * 255) / 4)
+            if len(self._data) >= self._quantity:
+                #print(f"quantity={self._quantity} start={self._startAngle}° end={self._endAngle}° data={self._data}")
+                self._currentData.update(self._data, self._startAngle, self._endAngle)
+                self._data = [ ]
+                self._state = LiDARMessageState.Nought
 
         self._lastByte = byte
