@@ -66,8 +66,8 @@ async def _serialLoop(_: web.Application):
                     cc = ser.read()
                     msg.update(int.from_bytes(cc, "big"))
             except Exception as e:
-                time.sleep(2)
                 print(e)
+                time.sleep(2)
     asyncio.create_task(asyncRunInThread(_implement, []))
 
 app.on_startup.append(_serialLoop)
