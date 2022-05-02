@@ -18,7 +18,7 @@
         <div class="lowerHome">
             <div class="bottomWrapper">
                 <p>A project realised for our BÜP</p>
-                <p>© 2022, David Dias Horta, Paul Meier</p>
+                <p>© 2022 | David Dias Horta, Paul Meier</p>
             </div>
         </div>
     </div>
