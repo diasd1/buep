@@ -12,6 +12,10 @@ from aiohttp_index import IndexMiddleware
 from asyncThread import asyncRunInThread
 from uart import LiDARCurrentData, LiDARMessage
 
+print("starting in 10s (press [CTRL]+[C] to cancel)")
+time.sleep(10)
+print("starting...")
+
 argumentParser = ArgumentParser(description="Python Basic Webserver")
 argumentParser.add_argument("-p", "--port", required=False,
 default=8080, help="port")
