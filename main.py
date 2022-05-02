@@ -1,3 +1,6 @@
+ROVER_COM = "COM5"
+LIDAR_COM = "COM6"
+
 from argparse import ArgumentParser
 import os
 import sys
@@ -36,11 +39,19 @@ async def restartHandler(_: web.Request) -> web.Response:
     print("restarting")
     os.execl(sys.executable, sys.executable, *sys.argv)
 
+roverSer = serial.Serial(ROVER_COM, 115200)
+
+async def sendUart(request: web.Request) -> web.Response:
+    text = await request.text()
+    print("sending uart", text)
+    roverSer.write(text)
+
 app = web.Application(middlewares=[IndexMiddleware()])
 
 app.router.add_get('/data', getHandler)
 app.router.add_get('/system/exit', exitHandler)
 app.router.add_get('/system/reboot', restartHandler)
+app.router.add_post('/rover/send', sendUart)
 
 app.router.add_static('/', './ui/dist')
 
@@ -48,7 +59,7 @@ async def _serialLoop(_: web.Application):
     def _implement():
         while True:
             try:
-                ser = serial.Serial("COM6", 115200)
+                ser = serial.Serial(LIDAR_COM, 115200)
 
                 while True:
                     cc = ser.read()
@@ -56,11 +67,6 @@ async def _serialLoop(_: web.Application):
             except Exception as e:
                 time.sleep(2)
                 print(e)
-    asyncio.create_task(asyncRunInThread(_implement, []))
-
-async def _driveLoop(_: web.Application):
-    def _implement():
-        ser = serial.Serial("COM5", 115200)
     asyncio.create_task(asyncRunInThread(_implement, []))
 
 app.on_startup.append(_serialLoop)
