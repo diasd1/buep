@@ -1,6 +1,3 @@
-ROVER_COM = "COM5"
-LIDAR_COM = "COM6"
-
 from argparse import ArgumentParser
 import os
 import sys
@@ -21,7 +18,11 @@ print("starting...")
 
 argumentParser = ArgumentParser(description="Python Basic Webserver")
 argumentParser.add_argument("-p", "--port", required=False,
-default=8080, help="port")
+    default=8080, help="port")
+argumentParser.add_argument("-l", "--lidar", required=False,
+    default="COM6", help="lidar com (e.g. COM6, /dev/xy, ...)")
+argumentParser.add_argument("-r", "--rover", required=False,
+    default="COM5", help="rover com (e.g. COM6, /dev/xy, ...)")
 arguments = argumentParser.parse_args() # get arguments
 
 data = LiDARCurrentData()
@@ -39,7 +40,7 @@ async def restartHandler(_: web.Request) -> web.Response:
     print("restarting")
     os.execl(sys.executable, sys.executable, *sys.argv)
 
-roverSer = serial.Serial(ROVER_COM, 115200)
+roverSer = serial.Serial(arguments.rover, 115200)
 
 async def sendUart(request: web.Request) -> web.Response:
     text = await request.text()
@@ -59,7 +60,7 @@ async def _serialLoop(_: web.Application):
     def _implement():
         while True:
             try:
-                ser = serial.Serial(LIDAR_COM, 115200)
+                ser = serial.Serial(arguments.lidar, 115200)
 
                 while True:
                     cc = ser.read()
