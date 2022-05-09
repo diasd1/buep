@@ -37,7 +37,7 @@ class RovEx:
         toSend = [InterfaceCmd.Write.value,
                   RovExCmd.Sync.value,
                   cmd.value]
-        if value:
+        if value is not None:
             toSend.append(value)
 
         print(f"send {toSend}")
