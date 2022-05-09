@@ -10,6 +10,7 @@ from aiohttp import web
 from aiohttp_index import IndexMiddleware
 
 from asyncThread import asyncRunInThread
+from rovex import Rover
 from uart import LiDARCurrentData, LiDARMessage
 
 print("starting in 10s (press [CTRL]+[C] to cancel)")
@@ -40,12 +41,14 @@ async def restartHandler(_: web.Request) -> web.Response:
     print("restarting")
     os.execl(sys.executable, sys.executable, *sys.argv)
 
-roverSer = serial.Serial(arguments.rover, 9600, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_TWO)
+rover = Rover(arguments.rover)
 
-async def sendUart(request: web.Request) -> web.Response:
-    text = bytearray.fromhex(await request.text())
-    print("sending uart", text)
-    roverSer.write(text)
+async def setSpeeds(request: web.Request) -> web.Response:
+    data = await request.json()
+    speedL = data["speedL"]
+    speedR = data["speedR"]
+    print(f"speedL={speedL}, speedR={speedR}")
+    rover.setSpeeds(speedL, speedR)
     return web.Response()
 
 app = web.Application(middlewares=[IndexMiddleware()])
@@ -53,7 +56,7 @@ app = web.Application(middlewares=[IndexMiddleware()])
 app.router.add_get('/data', getHandler)
 app.router.add_get('/system/exit', exitHandler)
 app.router.add_get('/system/reboot', restartHandler)
-app.router.add_post('/rover/send', sendUart)
+app.router.add_post('/rover/speed', setSpeeds)
 
 app.router.add_static('/', './ui/dist')
 
