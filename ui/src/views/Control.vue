@@ -90,6 +90,10 @@ export default {
                 this.rSpeed++;
                 this.lSpeed--;
             }
+            if (ev.key == " ")
+            {
+                this.lSpeed = this.rSpeed = 127;
+            }
         });
     }
 }
