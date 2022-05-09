@@ -1,4 +1,5 @@
 from enum import Enum
+from time import sleep
 from typing import Optional
 import serial
 
@@ -48,6 +49,7 @@ class RovEx:
 class Rover:
     def __init__(self, com: str) -> None:
         self._rovEx = RovEx(com)
+        sleep(1)
         self._rovEx.send(RovExCmd.DisableTimeout)
 
     def setSpeeds(self, speedL: int, speedR: int) -> None:

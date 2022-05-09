@@ -19,9 +19,9 @@ argumentParser.add_argument("-b", "--bypass-timeout", action=argparse.BooleanOpt
 argumentParser.add_argument("-p", "--port", required=False,
     default=8080, help="port")
 argumentParser.add_argument("-l", "--lidar", required=False,
-    default="COM6", help="lidar com (e.g. COM6, /dev/xy, ...)")
+    default="/dev/ttyUSB0", help="lidar com (e.g. COM6, /dev/xy, ...)")
 argumentParser.add_argument("-r", "--rover", required=False,
-    default="COM5", help="rover com (e.g. COM6, /dev/xy, ...)")
+    default="/dev/ttyACM0", help="rover com (e.g. COM6, /dev/xy, ...)")
 arguments = argumentParser.parse_args() # get arguments
 
 if arguments.bypass_timeout:
@@ -37,10 +37,9 @@ msg = LiDARMessage(data)
 async def getHandler(_: web.Request) -> web.Response:
     return web.json_response(status = 200, data = data._dist)
 
-async def exitHandler(_: web.Request) -> web.Response:
+async def exitHandler(_: web.Request) -> None:
     print("exiting")
     os._exit(10)
-    return web.json_response(status = 200, data = data._dist)
 
 async def restartHandler(_: web.Request) -> web.Response:
     print("restarting")
