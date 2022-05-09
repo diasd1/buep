@@ -40,12 +40,13 @@ async def restartHandler(_: web.Request) -> web.Response:
     print("restarting")
     os.execl(sys.executable, sys.executable, *sys.argv)
 
-roverSer = serial.Serial(arguments.rover, 115200)
+roverSer = serial.Serial(arguments.rover, 9600, serial.EIGHTBITS, serial.PARITY_NONE, serial.STOPBITS_TWO)
 
 async def sendUart(request: web.Request) -> web.Response:
-    text = await request.text()
+    text = bytearray.fromhex(await request.text())
     print("sending uart", text)
     roverSer.write(text)
+    return web.Response()
 
 app = web.Application(middlewares=[IndexMiddleware()])
 
