@@ -49,7 +49,7 @@ class RovEx:
 class Rover:
     def __init__(self, com: str) -> None:
         self._rovEx = RovEx(com)
-        sleep(1)
+        self._rovEx.send(RovExCmd.DisableTimeout)
         self._rovEx.send(RovExCmd.DisableTimeout)
 
     def setSpeeds(self, speedL: int, speedR: int) -> None:
