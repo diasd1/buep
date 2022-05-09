@@ -11,6 +11,7 @@
             <RouterLink class="rLink" to="/">Home</RouterLink>
             <RouterLink class="rLink" to="/graph">Graph</RouterLink>
             <RouterLink class="rLink" to="/table">Table</RouterLink>
+            <RouterLink class="rLink" to="/control">Control</RouterLink>
         </div>
         <div class="view">
             <RouterView />

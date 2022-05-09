@@ -62,11 +62,21 @@ export default {
         window.addEventListener('keyup', (ev) => {
             if (ev.key == "ArrowUp")
             {
+                if (this.rSpeed != this.lSpeed)
+                {
+                    this.rSpeed = this.lSpeed = 127;
+                }
+
                 this.rSpeed++;
                 this.lSpeed++;
             }
             if (ev.key == "ArrowDown")
             {
+                if (this.rSpeed != this.lSpeed)
+                {
+                    this.rSpeed = this.lSpeed = 127;
+                }
+
                 this.rSpeed--;
                 this.lSpeed--;
             }
