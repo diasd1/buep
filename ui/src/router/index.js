@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory } from 'vue-router'
+import { createRouter, createWebHashHistory } from 'vue-router';
 
 const router = createRouter({
   history: createWebHashHistory(import.meta.env.BASE_URL),
@@ -7,6 +7,11 @@ const router = createRouter({
       path: '/',
       name: 'home',
       component: () => import('../views/Home.vue')
+    },
+    {
+      path: '/control',
+      name: 'control',
+      component: () => import('../views/Control.vue')
     },
     {
       path: '/graph',
@@ -21,4 +26,4 @@ const router = createRouter({
   ]
 })
 
-export default router
+export default router;
