@@ -1,4 +1,5 @@
 from argparse import ArgumentParser
+import argparse
 import os
 import sys
 
@@ -13,11 +14,8 @@ from asyncThread import asyncRunInThread
 from rovex import Rover
 from uart import LiDARCurrentData, LiDARMessage
 
-print("starting in 10s (press [CTRL]+[C] to cancel)")
-time.sleep(10)
-print("starting...")
-
 argumentParser = ArgumentParser(description="Python Basic Webserver")
+argumentParser.add_argument("-b", "--bypass-timeout", action=argparse.BooleanOptionalAction, help="bypass startup timeout")
 argumentParser.add_argument("-p", "--port", required=False,
     default=8080, help="port")
 argumentParser.add_argument("-l", "--lidar", required=False,
@@ -25,6 +23,13 @@ argumentParser.add_argument("-l", "--lidar", required=False,
 argumentParser.add_argument("-r", "--rover", required=False,
     default="COM5", help="rover com (e.g. COM6, /dev/xy, ...)")
 arguments = argumentParser.parse_args() # get arguments
+
+if arguments.bypass_timeout:
+    print("bypassing startup timeout")
+else:
+    print("starting in 10s (press [CTRL]+[C] to cancel)")
+    time.sleep(10)
+    print("starting...")
 
 data = LiDARCurrentData()
 msg = LiDARMessage(data)

@@ -29,8 +29,8 @@ class RovEx:
         self._ser.write([InterfaceCmd.Config.value,
                          InterfaceCmd.ISSMode.value,
                          InterfaceCmd.IOModeAndSerial.value,
-                         InterfaceCmd.Baud9600L.value,
                          InterfaceCmd.Baud9600H.value,
+                         InterfaceCmd.Baud9600L.value,
                          InterfaceCmd.IOType.value])
 
     def send(self, cmd: RovExCmd, value: Optional[int] = None) -> None:
@@ -39,6 +39,8 @@ class RovEx:
                   cmd.value]
         if value:
             toSend.append(value)
+
+        print(f"send {toSend}")
 
         self._ser.write(toSend)
 
