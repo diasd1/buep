@@ -51,5 +51,5 @@ class Rover:
         self._rovEx.send(RovExCmd.DisableTimeout)
 
     def setSpeeds(self, speedL: int, speedR: int) -> None:
-        self._rovEx.send(RovExCmd.SpeedL, speedL)
+        self._rovEx.send(RovExCmd.SpeedL, min(speedL + 1, 255))
         self._rovEx.send(RovExCmd.SpeedR, 255 - speedR)
