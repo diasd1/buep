@@ -64,7 +64,7 @@ export default {
             {
                 if (this.rSpeed != this.lSpeed)
                 {
-                    this.rSpeed = this.lSpeed = 127;
+                    this.rSpeed = this.lSpeed = Math.abs((this.rSpeed + this.lSpeed) / 2);
                 }
 
                 this.rSpeed++;
@@ -74,7 +74,7 @@ export default {
             {
                 if (this.rSpeed != this.lSpeed)
                 {
-                    this.rSpeed = this.lSpeed = 127;
+                    this.rSpeed = this.lSpeed = Math.abs((this.rSpeed + this.lSpeed) / 2);
                 }
 
                 this.rSpeed--;
