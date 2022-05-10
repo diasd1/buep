@@ -1,27 +1,45 @@
+# -*- coding: utf-8 -*-
+"""curiousLiDAR Main"""
+__copyright__ = ("Copyright (c) 2022 David Dias Horta, Paul Meier")
+
+# on windows:
+#   mypy .
+#   pylint main.py lidar.py rovex.py asyncThread.py findShapes.py
+
 from argparse import ArgumentParser
 import argparse
 import os
 import sys
 
 import time
-import serial
-import asyncio
 
 from aiohttp import web
-from aiohttp_index import IndexMiddleware
+from aiohttp_index import IndexMiddleware # type: ignore
+from lidar import LiDAR
 
-from asyncThread import asyncRunInThread
 from rovex import Rover
-from uart import LiDARCurrentData, LiDARMessage
 
 argumentParser = ArgumentParser(description="Python Basic Webserver")
-argumentParser.add_argument("-b", "--bypass-timeout", action=argparse.BooleanOptionalAction, help="bypass startup timeout")
-argumentParser.add_argument("-p", "--port", required=False,
-    default=8080, help="port")
-argumentParser.add_argument("-l", "--lidar", required=False,
-    default="/dev/ttyUSB0", help="lidar com (e.g. COM6, /dev/xy, ...)")
-argumentParser.add_argument("-r", "--rover", required=False,
-    default="/dev/ttyACM0", help="rover com (e.g. COM6, /dev/xy, ...)")
+
+argumentParser.add_argument("-b", "--bypass-timeout",
+    action=argparse.BooleanOptionalAction, # type: ignore
+    help="bypass startup timeout")
+
+argumentParser.add_argument("-p", "--port",
+    required=False,
+    default=8080,
+    help="port")
+
+argumentParser.add_argument("-l", "--lidar",
+    required=False,
+    default="/dev/ttyUSB0",
+    help="lidar com (e.g. COM6, /dev/xy, ...)")
+
+argumentParser.add_argument("-r", "--rover",
+    required=False,
+    default="/dev/ttyACM0",
+    help="rover com (e.g. COM6, /dev/xy, ...)")
+
 arguments = argumentParser.parse_args() # get arguments
 
 if arguments.bypass_timeout:
@@ -31,23 +49,25 @@ else:
     time.sleep(10)
     print("starting...")
 
-data = LiDARCurrentData()
-msg = LiDARMessage(data)
+rover = Rover(arguments.rover)
+lidar = LiDAR(arguments.lidar)
 
-async def getHandler(_: web.Request) -> web.Response:
-    return web.json_response(status = 200, data = data._dist)
+async def getDataHandler(_: web.Request) -> web.Response:
+    """gets the current LiDAR data"""
+    return web.json_response(status = 200, data = lidar.data)
 
-async def exitHandler(_: web.Request) -> None:
+async def exitHandler(_: web.Request) -> web.Response:
+    """force quits the application"""
     print("exiting")
-    os._exit(10)
+    os._exit(10) # pylint: disable=protected-access
 
 async def restartHandler(_: web.Request) -> web.Response:
+    """force restarts the application"""
     print("restarting")
     os.execl(sys.executable, sys.executable, *sys.argv)
 
-rover = Rover(arguments.rover)
-
-async def setSpeeds(request: web.Request) -> web.Response:
+async def setSpeedsHandler(request: web.Request) -> web.Response:
+    """sets the rover's speeds"""
     data = await request.json()
     speedL = data["speedL"]
     speedR = data["speedR"]
@@ -57,26 +77,12 @@ async def setSpeeds(request: web.Request) -> web.Response:
 
 app = web.Application(middlewares=[IndexMiddleware()])
 
-app.router.add_get('/data', getHandler)
+app.router.add_get('/data', getDataHandler)
 app.router.add_get('/system/exit', exitHandler)
 app.router.add_get('/system/reboot', restartHandler)
-app.router.add_post('/rover/speed', setSpeeds)
+app.router.add_post('/rover/speed', setSpeedsHandler)
 
 app.router.add_static('/', './ui/dist')
 
-async def _serialLoop(_: web.Application):
-    def _implement():
-        while True:
-            try:
-                ser = serial.Serial(arguments.lidar, 115200)
-
-                while True:
-                    cc = ser.read()
-                    msg.update(int.from_bytes(cc, "big"))
-            except Exception as e:
-                print(e)
-                time.sleep(2)
-    asyncio.create_task(asyncRunInThread(_implement, []))
-
-app.on_startup.append(_serialLoop)
-asyncio.run ( web._run_app(app, port=arguments.port) )
+app.on_startup.append(lidar.startupTask)
+web.run_app(app, port = arguments.port)
