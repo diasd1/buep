@@ -1,17 +1,11 @@
-<script setup>
-    import {
-        RouterLink,
-        RouterView
-    } from "vue-router";
-</script>
-
 <template>
     <div id="appWrapper">
         <div class="header">
             <RouterLink class="rLink" to="/">Home</RouterLink>
+            <RouterLink class="rLink" to="/control">Control</RouterLink>
             <RouterLink class="rLink" to="/graph">Graph</RouterLink>
             <RouterLink class="rLink" to="/table">Table</RouterLink>
-            <RouterLink class="rLink" to="/control">Control</RouterLink>
+            <a class="rLink" href="https://github.com/diasd1/buep">Github</a>
         </div>
         <div class="view">
             <RouterView />

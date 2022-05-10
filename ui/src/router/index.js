@@ -11,7 +11,7 @@ const router = createRouter({
     {
       path: '/control',
       name: 'control',
-      component: () => import('../views/Control.vue')
+      component: () => import('../views/CombinedControl.vue')
     },
     {
       path: '/graph',

@@ -129,7 +129,7 @@
       };
 
       const update = () => {
-        if (!this.$router.currentRoute.value.path.includes("graph")) { return; }
+        if (!this.$router.currentRoute.value.path.includes("graph") && !this.$router.currentRoute.value.path.includes("control")) { return; }
 
         fetch("/data").then(x => x.json())
           .then(jdata => {

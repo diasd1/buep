@@ -2,7 +2,7 @@
   <div class="home">
     <div class="upperHome">
       <h1>curious<span class="accent">LiDAR</span></h1>
-      <div class="button"><RouterLink class="link" to="/graph">Get Started!</RouterLink></div>
+      <div class="button"><RouterLink class="link" to="/control">Get Started!</RouterLink></div>
     </div>
   </div>
 </template>

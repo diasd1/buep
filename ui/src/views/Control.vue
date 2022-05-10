@@ -1,8 +1,8 @@
 <template>
     <div class="top">
-        <div>
+        <!--div>
             <button class="reset" @click="() => { lSpeed = 127; rSpeed = 127 }">STOP</button>
-        </div>
+        </div-->
         <div class="control">
             <div class="range">
                 <p>
@@ -52,19 +52,21 @@ export default {
     },
     watch: {
         lSpeed() {
+            this.lSpeed = Math.max(Math.min(this.lSpeed, 255), 0)
             this.update();
         },
         rSpeed() {
+            this.rSpeed = Math.max(Math.min(this.rSpeed, 255), 0)
             this.update();
         }
     },
     mounted() {
-        window.addEventListener('keyup', (ev) => {
+        window.addEventListener('keydown', (ev) => {
             if (ev.key == "ArrowUp")
             {
                 if (this.rSpeed != this.lSpeed)
                 {
-                    this.rSpeed = this.lSpeed = Math.abs((this.rSpeed + this.lSpeed) / 2);
+                    this.rSpeed = this.lSpeed = Math.round(Math.abs((this.rSpeed + this.lSpeed) / 2));
                 }
 
                 this.rSpeed++;
@@ -74,7 +76,7 @@ export default {
             {
                 if (this.rSpeed != this.lSpeed)
                 {
-                    this.rSpeed = this.lSpeed = Math.abs((this.rSpeed + this.lSpeed) / 2);
+                    this.rSpeed = this.lSpeed = Math.round(Math.abs((this.rSpeed + this.lSpeed) / 2));
                 }
 
                 this.rSpeed--;
@@ -125,10 +127,11 @@ export default {
     .control {
         display: flex;
         flex-direction: row;
-        justify-content: center;
+        justify-content: space-between;
         align-items: center;
         flex-grow: 1;
         flex-shrink: 1;
+        width: 80%;
 
         .car {
             width: 300px;
