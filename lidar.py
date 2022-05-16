@@ -30,6 +30,7 @@ class LiDARCurrentData:
         self._dist = [ 0.0 for _ in range(360) ]
 
     def toJson(self) -> List[float]:
+        """serialise"""
         return self._dist
 
     def update(self, data: List[float], startAngle: float, endAngle: float) -> None:
@@ -139,4 +140,4 @@ class LiDAR:
                 except Exception as exc:
                     print(exc)
                     sleep(1)
-        asyncio.create_task(asyncRunInThread(_implement, []))
+        asyncio.create_task(asyncRunInThread(_implement))

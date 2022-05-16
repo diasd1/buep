@@ -22,6 +22,11 @@ export default {
     },
     mounted() {
         window.addEventListener('keydown', (ev) => {
+            if (!ev.altKey)
+            {
+                return;
+            }
+
             if (ev.key == "1")
             {
                 this.showUnderlay = true;
