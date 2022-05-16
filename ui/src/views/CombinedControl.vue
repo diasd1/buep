@@ -18,7 +18,7 @@ export default {
         return {
             showUnderlay: true,
             showOverlay: true,
-            controlWidth: 300
+            controlWidth: 50
         }
     },
     mounted() {

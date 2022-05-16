@@ -1,11 +1,17 @@
 <template>
     <div id="appWrapper">
         <div class="header">
-            <RouterLink class="rLink" to="/">Home</RouterLink>
-            <RouterLink class="rLink" to="/control">Control</RouterLink>
-            <RouterLink class="rLink" to="/graph">Graph</RouterLink>
-            <RouterLink class="rLink" to="/table">Table</RouterLink>
-            <a class="rLink" href="https://github.com/diasd1/buep">Github</a>
+            <div class="title">
+                <img src="/src/assets/favicon.png">
+                <RouterLink class="rLink" to="/">curious<span class="accent">LiDAR</span></RouterLink>
+            </div>
+            <div class="links">
+                <RouterLink class="rLink" to="/">Home</RouterLink>
+                <RouterLink class="rLink" to="/control">Control</RouterLink>
+                <RouterLink class="rLink" to="/graph">Graph</RouterLink>
+                <RouterLink class="rLink" to="/table">Table</RouterLink>
+                <a class="rLink" href="https://github.com/diasd1/buep">Github</a>
+            </div>
         </div>
         <div class="view">
             <RouterView />
@@ -99,7 +105,7 @@
             flex-grow: 0;
             display: flex;
             flex-direction: row;
-            justify-content: center;
+            justify-content: space-around;
 
             .rLink {
                 color: var(--text-main);
@@ -110,7 +116,7 @@
                 }
 
                 &:not(:last-child) {
-                    border-right: 1px solid var(--border);
+                    /*border-right: 1px solid var(--border);*/
                     padding: 0px 10px;
                 }
 
@@ -131,6 +137,10 @@
 </style>
 
 <style scoped lang="scss">
+    .accent {
+        color: var(--red);
+    }
+
     .lowerHome {
         flex-grow: 0;
         display: flex;
@@ -150,5 +160,23 @@
                 margin-bottom: 0;
             }
         }
+    }
+
+    .title {
+        display: flex;
+        align-items: center;
+        font-size: 1.2em;
+        font-weight: 600;
+        letter-spacing: 1px;
+
+        img {
+            width: 20px;
+        }
+    }
+
+    .header {
+        padding-bottom: 5px;
+        margin-bottom: 10px;
+        border-bottom: 1px solid var(--border);
     }
 </style>
