@@ -14,8 +14,8 @@ import sys
 import time
 
 from aiohttp import web
-from aiohttp_index import IndexMiddleware
-from asyncThread import asyncRunInThread # type: ignore
+from aiohttp_index import IndexMiddleware # type: ignore
+from asyncThread import asyncRunInThread
 from findShapes import contestBalloon
 from lidar import LiDAR
 
@@ -86,8 +86,9 @@ async def getRecommendedSpeeds(_: web.Request) -> web.Response:
         "speedR": speedR
     })
 
-async def autoLoop(_: web.Application):
-    def _implement():
+async def autoLoop(_: web.Application) -> None:
+    """runs the contest balloon continuously"""
+    def _implement() -> None:
         while True:
             speedL, speedR = contestBalloon(lidar.data.toJson())
             print(f"speedL={speedL}, speedR={speedR}")
