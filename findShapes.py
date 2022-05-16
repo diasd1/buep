@@ -1,10 +1,35 @@
-import enum
+from typing import List
 
-class Flat(enum.IntEnum):
-    points = 0
-    start_angle = 1
-    end_angle = 2
-    dist = 3
+
+class Flat:
+    def __init__(self,
+                 count: int,
+                 startAngle: int,
+                 endAngle: int,
+                 distance: float) -> None:
+        self._count = count
+        self._startAngle = startAngle
+        self._endAngle = endAngle
+        self._distance = distance
+
+    @property
+    def count(self) -> int:
+        return self._count
+
+    @property
+    def startAngle(self) -> int:
+        return self._startAngle
+
+    @property
+    def endAngle(self) -> int:
+        return self._endAngle
+
+    @property
+    def distance(self) -> int:
+        return self._distance
+
+    def __repr__(self) -> str:
+        return f"count={self.count} start={self.startAngle} end={self.endAngle} dist={self._distance}"
 
 speed1 = 132
 speed2 = 122
@@ -20,7 +45,7 @@ def contest_pop_loon(data : list = None) -> tuple:
     print(flats)
 
     for flat in flats:
-        if flat[Flat.end_angle] > front_angle and flat[Flat.start_angle] < front_angle:
+        if flat.endAngle > front_angle and flat.startAngle < front_angle:
             if data[front_angle] > 200:
                 return drive_to_flat_L_end(flat)
             return 127,127
@@ -28,10 +53,10 @@ def contest_pop_loon(data : list = None) -> tuple:
         return 127,127
 
 
-def drive_to_flat_L_end(flat:list):
-    if angle_deviation(flat[Flat.start_angle],front_angle):
+def drive_to_flat_L_end(flat: Flat):
+    if angle_deviation(flat.startAngle, front_angle):
         return speed1,speed1
-    elif flat[Flat.start_angle] < front_angle:
+    elif flat.startAngle < front_angle:
         return speed2,speed1
 
 
@@ -41,8 +66,7 @@ def angle_deviation(is_angle,should_angle):
         return True
     return False
 
-
-def get_flats(data):
+def get_flats(data) -> List[Flat]:
     threshold_dist = 100
     threshold_angle = 10
     found_flats = []
@@ -62,7 +86,7 @@ def get_flats(data):
                 if abs(previous_dist - data[angle+3]) > threshold_dist:
                     if count > threshold_angle:
                         #forman: amaunt of points in flat, start angle of flat, end angle of flat, distance
-                        found_flats.append([count,start_angle,angle,point])
+                        found_flats.append(Flat(count,start_angle,angle,point))
                     start_angle = angle+1
                     count = 0
     return found_flats
