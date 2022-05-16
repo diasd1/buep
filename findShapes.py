@@ -56,7 +56,7 @@ def contestBalloon(data : List[float]) -> Tuple[int, int]:
     print(flats)
 
     for flat in flats:
-        if flat.startAngle < FRONT_ANGLE < flat.endAngle:
+        if flat.startAngle <= FRONT_ANGLE <= flat.endAngle:
             if data[FRONT_ANGLE] > 200:
                 return _driveToFlatL(flat)
             return 127, 127
@@ -76,7 +76,7 @@ def _driveToFlatL(flat: Flat) -> Tuple[int, int]:
 
 def _angleDeviation(isAngle: int, shouldAngle: int) -> bool:
     """determines whether the deviation of two angles is acceptable"""
-    deviation = 5
+    deviation = 10
     if abs(isAngle - shouldAngle) <= deviation:
         return True
     return False
