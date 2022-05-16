@@ -94,7 +94,8 @@ class RovEx:
 
         print(f"ack={ack} txc={txCount} rxc={rxCount}")
 
-        return self._ser.read(rxCount) # type: ignore
+        return bytes()
+        #return self._ser.read(rxCount) # type: ignore
 
 
 class Rover:
