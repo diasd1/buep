@@ -31,18 +31,13 @@ def contest_pop_loon(data : list = None) -> tuple:
 def drive_to_flat_L_end(flat:list):
     if angle_deviation(flat[Flat.start_angle],front_angle):
         return speed1,speed1
-    if flat[Flat.start_angle] < front_angle:
+    elif flat[Flat.start_angle] < front_angle:
         return speed2,speed1
 
-def drive_to_flat_R_end(flat:list):
-    if angle_deviation(flat[Flat.end_angle],front_angle):
-        return speed1,speed1
-    if flat[Flat.end_angle] > front_angle:
-        return speed1,speed2
 
 def angle_deviation(is_angle,should_angle):
-    diviation = 10
-    if abs(should_angle - should_angle) <= 10:
+    deviation = 5
+    if abs(is_angle - should_angle) <= deviation:
         return True
     return False
 
