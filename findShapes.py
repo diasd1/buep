@@ -39,7 +39,7 @@ class Flat:
 
     def __repr__(self) -> str:
         return f"count={self.count} start={self.startAngle} \
-            end={self.endAngle} dist={self._distance}"
+end={self.endAngle} dist={self._distance}"
 
 SPEED_1 = 132
 SPEED_2 = 122
