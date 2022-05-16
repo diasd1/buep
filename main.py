@@ -86,7 +86,7 @@ async def getRecommendedSpeeds(_: web.Request) -> web.Response:
         "speedR": speedR
     })
 
-async def autoLoop():
+async def autoLoop(_: web.Application):
     def _implement():
         while True:
             speedL, speedR = contestBalloon(lidar.data.toJson())

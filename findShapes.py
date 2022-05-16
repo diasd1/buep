@@ -77,7 +77,7 @@ def _driveToFlatL(flat: Flat) -> Tuple[int, int]:
 
 def _angleDeviation(isAngle: int, shouldAngle: int) -> bool:
     """determines whether the deviation of two angles is acceptable"""
-    deviation = 10
+    deviation = 30
     if abs(isAngle - shouldAngle) <= deviation:
         return True
     return False
