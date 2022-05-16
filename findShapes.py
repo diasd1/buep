@@ -93,7 +93,7 @@ def _getFlats(data: List[float]) -> List[Flat]:
     #reduce FOV to 180°
     data = data[90:270]
     for angle,point in enumerate(data):
-        if 0 < angle < len(data) + 1:
+        if 0 < angle < len(data) - 3:
             deltaDistance =abs(data[angle] - data[angle-1])
             if deltaDistance < thresholdDist:
                 count +=1
