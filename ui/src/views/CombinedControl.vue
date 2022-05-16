@@ -1,10 +1,10 @@
 <template>
 <div class="wrap">
     <div class="overlay">
-        <control v-if="showOverlay" />
+        <control v-if="showOverlay" :width="controlWidth" />
     </div>
     <div class="underlay">
-        <graph v-if="showUnderlay" />
+        <graph v-if="showUnderlay" @changeControlWidth="nw => controlWidth = nw" />
     </div>
 </div>
 </template>
@@ -17,7 +17,8 @@ export default {
     data() {
         return {
             showUnderlay: true,
-            showOverlay: true
+            showOverlay: true,
+            controlWidth: 300
         }
     },
     mounted() {

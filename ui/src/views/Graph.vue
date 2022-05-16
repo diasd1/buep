@@ -36,6 +36,7 @@
     watch: {
       maxValue() {
         this.options.scale.max = this.maxValue || 1;
+        this.$emit("changeControlWidth", Math.max((- this.maxValue / 3 + 150), 50))
       },
       chartRotation() {
         const labels = [ ];

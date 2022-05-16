@@ -11,7 +11,7 @@
                 </p>
                 <input type="range" v-model="lSpeed" min="0" max="255" />
             </div>
-            <img class="car" src="/src/assets/car.png" :style="{ transform: 'rotate('+ 0 +'rad)'}" />
+            <img class="car" src="/src/assets/car.png" :style="{ width: `${width}px`, transform: 'rotate('+ 0 +'rad)'}" />
             <div class="range">
                 <p>
                     {{displaySpeed(rSpeed)}}
@@ -25,6 +25,12 @@
 
 <script>
 export default {
+    props: {
+        width: {
+            type: Number,
+            default: 300
+        }
+    },
     data() {
         return {
             rSpeed: 127,
@@ -132,10 +138,6 @@ export default {
         flex-grow: 1;
         flex-shrink: 1;
         width: 80%;
-
-        .car {
-            width: 300px;
-        }
 
         .range {
             display: flex;
