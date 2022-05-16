@@ -33,7 +33,9 @@
   }
 
   span.accent {
-    color: var(--red);
+    background: -webkit-linear-gradient(45deg, var(--red), #4b00ed);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 
   .button {
@@ -50,7 +52,7 @@
       width: 100%;
       height: 2px;
       z-index: 0;
-      background: var(--red);
+      background: -webkit-linear-gradient(0deg, var(--red), #4b00ed);
       transform: scaleX(0);
       opacity: 0;
       transition: 400ms;
@@ -75,9 +77,9 @@
       }
 
       .link {
-        color: var(--red);
         font-weight: bold;
         font-size: 2em;
+        color: var(--red);
       }
 
       cursor: pointer;

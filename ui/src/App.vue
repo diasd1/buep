@@ -8,8 +8,9 @@
             <div class="links">
                 <RouterLink class="rLink" to="/">Home</RouterLink>
                 <RouterLink class="rLink" to="/control">Control</RouterLink>
-                <RouterLink class="rLink" to="/graph">Graph</RouterLink>
+                <RouterLink v-if="false" class="rLink" to="/graph">Graph</RouterLink>
                 <RouterLink class="rLink" to="/table">Table</RouterLink>
+                <RouterLink class="rLink" to="/maintenance">Maintenance</RouterLink>
                 <a class="rLink" href="https://github.com/diasd1/buep">Github</a>
             </div>
         </div>
@@ -142,6 +143,7 @@
     }
 
     .lowerHome {
+        border-top: 1px solid var(--border);
         flex-grow: 0;
         display: flex;
         flex-direction: column;
@@ -178,5 +180,9 @@
         padding-bottom: 5px;
         margin-bottom: 10px;
         border-bottom: 1px solid var(--border);
+
+        .title a {
+            color: var(--text-main) !important;
+        }
     }
 </style>
