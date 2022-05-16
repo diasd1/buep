@@ -94,6 +94,9 @@ class RovEx:
 
         print(f"ack={ack} txc={txCount} rxc={rxCount}")
 
+        if not rxCount == 255:
+            print(self._ser.read(rxCount))
+
         return bytes()
         #return self._ser.read(rxCount) # type: ignore
 
