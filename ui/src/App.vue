@@ -8,10 +8,8 @@
             <div class="links">
                 <RouterLink class="rLink" to="/">Home</RouterLink>
                 <RouterLink class="rLink" to="/control">Control</RouterLink>
-                <RouterLink v-if="false" class="rLink" to="/graph">Graph</RouterLink>
                 <RouterLink class="rLink" to="/table">Table</RouterLink>
                 <RouterLink class="rLink" to="/maintenance">Maintenance</RouterLink>
-                <a class="rLink" href="https://github.com/diasd1/buep">Github</a>
             </div>
         </div>
         <div class="view">
@@ -19,7 +17,7 @@
         </div>
         <div class="lowerHome">
             <div class="bottomWrapper">
-                <p>A project realised for our BÜP</p>
+                <p>A project realised for our BüP</p>
                 <p>© 2022 | David Dias Horta, Paul Meier</p>
             </div>
         </div>
@@ -99,14 +97,15 @@
         flex-direction: column;
 
         .header {
-            width: 100%;
+            width: calc(100% - 400px);
             height: 100%;
             position: relative;
             flex: 1;
             flex-grow: 0;
             display: flex;
             flex-direction: row;
-            justify-content: space-around;
+            justify-content: space-between;
+            padding: 0 200px;
 
             .rLink {
                 color: var(--text-main);
@@ -149,7 +148,8 @@
         flex-direction: column;
         justify-content: flex-end;
         align-items: center;
-        width: 100%;
+        width: calc(100% - 400px);
+        padding: 0 200px;
 
         .bottomWrapper {
             display: flex;

@@ -69,6 +69,7 @@ export default defineComponent({
     .settingsWrapper {
         background: var(--light-background);
         padding: 15px;
+        margin: 10px;
         border-radius: 10px;
 
         p {
