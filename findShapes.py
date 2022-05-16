@@ -28,7 +28,7 @@ def drive_to_flat_L_end(flat:list):
     if flat[Flat.start_angle] < 180:
         return speed2,speed1
 
-def drive_to_flat_L_end(flat:list):
+def drive_to_flat_R_end(flat:list):
     if flat[Flat.start_angle] == 180:
         return speed1,speed1
     if flat[Flat.end_angle] > 180:
