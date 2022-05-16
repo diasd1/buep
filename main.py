@@ -54,7 +54,7 @@ lidar = LiDAR(arguments.lidar)
 
 async def getDataHandler(_: web.Request) -> web.Response:
     """gets the current LiDAR data"""
-    return web.json_response(status = 200, data = lidar.data)
+    return web.json_response(status = 200, data = lidar.data.toJson())
 
 async def exitHandler(_: web.Request) -> web.Response:
     """force quits the application"""

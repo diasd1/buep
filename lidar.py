@@ -29,6 +29,9 @@ class LiDARCurrentData:
     def __init__(self) -> None:
         self._dist = [ 0.0 for _ in range(360) ]
 
+    def toJson(self) -> List[float]:
+        return self._dist
+
     def update(self, data: List[float], startAngle: float, endAngle: float) -> None:
         """updates the current data flexibly"""
         angleRange = abs(endAngle - startAngle)
