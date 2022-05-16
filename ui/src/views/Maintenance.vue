@@ -16,7 +16,7 @@
                     <br>
                     <p>Speed R: {{speedR}}</p>
                 </div>
-                <button @click="setSpeeds">Write To Speeds</button>
+                <button @click="setSpeeds">Set for 1s</button>
             </div>
         </div>
     </div>
@@ -39,14 +39,22 @@ export default defineComponent({
                 this.speedR = jdata.speedR
             })
         },
-        setSpeeds() {
+        setSpeedLR(speedL, speedR)
+        {
             fetch("/rover/speed", {
                 method: "POST",
                 body: JSON.stringify({
-                    speedL: Number(this.speedL),
-                    speedR: Number(this.speedR)
+                    speedL: speedL,
+                    speedR: speedR
                 })
             })
+        },
+        setSpeeds() {
+
+            this.setSpeedLR(Number(this.speedL), Number(this.speedR))
+            
+
+            setTimeout(() => this.setSpeedLR(127, 127), 1000)
         }
     },
     data() {
