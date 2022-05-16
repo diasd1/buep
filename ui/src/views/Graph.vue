@@ -210,7 +210,10 @@
         flex-direction: row;
         justify-content: space-between;
         align-items: center;
-        width: 25%;
+
+        * {
+          margin: 0 10px;
+        }
       }
     }
   }
