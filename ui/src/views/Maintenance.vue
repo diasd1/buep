@@ -13,7 +13,6 @@
                 <button @click="getRecommendedSpeeds">GET</button>
                 <div class="info">
                     <p>Speed L: {{speedL}}</p>
-                    <br>
                     <p>Speed R: {{speedR}}</p>
                 </div>
                 <button @click="setSpeeds">Set for 1s</button>
