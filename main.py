@@ -14,7 +14,8 @@ import sys
 import time
 
 from aiohttp import web
-from aiohttp_index import IndexMiddleware # type: ignore
+from aiohttp_index import IndexMiddleware
+from asyncThread import asyncRunInThread # type: ignore
 from findShapes import contestBalloon
 from lidar import LiDAR
 
@@ -85,6 +86,14 @@ async def getRecommendedSpeeds(_: web.Request) -> web.Response:
         "speedR": speedR
     })
 
+async def autoLoop():
+    def _implement():
+        while True:
+            speedL, speedR = contestBalloon(lidar.data.toJson())
+            print(f"speedL={speedL}, speedR={speedR}")
+            rover.setSpeeds(speedL, speedR)
+    await asyncRunInThread(_implement)
+
 app = web.Application(middlewares=[IndexMiddleware()])
 
 app.router.add_get('/data', getDataHandler)
@@ -96,4 +105,5 @@ app.router.add_post('/rover/speed', setSpeedsHandler)
 app.router.add_static('/', './ui/dist')
 
 app.on_startup.append(lidar.startupTask)
+app.on_startup.append(autoLoop)
 web.run_app(app, port = arguments.port)
