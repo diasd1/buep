@@ -14,8 +14,8 @@ import sys
 import time
 
 from aiohttp import web
-from aiohttp_index import IndexMiddleware
-from findShapes import contest_pop_loon # type: ignore
+from aiohttp_index import IndexMiddleware # type: ignore
+from findShapes import contestBalloon
 from lidar import LiDAR
 
 from rovex import Rover
@@ -76,9 +76,9 @@ async def setSpeedsHandler(request: web.Request) -> web.Response:
     rover.setSpeeds(speedL, speedR)
     return web.Response()
 
-async def getRecommendedSpeeds(request: web.Request) -> web.Response:
+async def getRecommendedSpeeds(_: web.Request) -> web.Response:
     """gets the recommended speeds (L, R)"""
-    speedL, speedR = contest_pop_loon(lidar.data.toJson())
+    speedL, speedR = contestBalloon(lidar.data.toJson())
     print(f"speedL={speedL}, speedR={speedR}")
     return web.json_response(status = 200, data = {
         "speedL": speedL,
