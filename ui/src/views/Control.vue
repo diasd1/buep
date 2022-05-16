@@ -11,7 +11,7 @@
                 </p>
                 <input type="range" v-model="lSpeed" min="0" max="255" />
             </div>
-            <img class="car" src="/src/assets/car.png" :style="{ width: `${width}px`, transform: 'rotate('+ 0 +'rad)'}" />
+            <img class="car" src="/src/assets/car.png" :style="{ width: `${width}px`, transform: 'rotate('+ rotation +'deg)'}" />
             <div class="range">
                 <p>
                     {{displaySpeed(rSpeed)}}
@@ -29,6 +29,10 @@ export default {
         width: {
             type: Number,
             default: 300
+        },
+        rotation: {
+            type: Number,
+            default: 0
         }
     },
     data() {

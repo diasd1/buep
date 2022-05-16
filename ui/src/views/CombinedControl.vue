@@ -1,10 +1,10 @@
 <template>
 <div class="wrap">
     <div class="overlay">
-        <control v-if="showOverlay" :width="controlWidth" />
+        <control v-if="showOverlay" :width="controlWidth" :rotation="rotation" />
     </div>
     <div class="underlay">
-        <graph v-if="showUnderlay" @changeControlWidth="nw => controlWidth = nw" />
+        <graph v-if="showUnderlay" @changeControlWidth="nw => controlWidth = nw" @changeControlRotation="nr => rotation = nr" />
     </div>
 </div>
 </template>
@@ -18,7 +18,8 @@ export default {
         return {
             showUnderlay: true,
             showOverlay: true,
-            controlWidth: 50
+            controlWidth: 50,
+            rotation: 0
         }
     },
     mounted() {

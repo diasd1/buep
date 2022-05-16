@@ -44,6 +44,8 @@
           labels.push(this.parseChartRotationLabel(this.chartRotation, i));
         }
 
+        this.$emit("changeControlRotation", this.chartRotation >= 180 ? (this.chartRotation - 180) : this.chartRotation + 180)
+
         this.testData.labels = labels;
       }
     },
