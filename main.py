@@ -8,6 +8,7 @@ __copyright__ = ("Copyright (c) 2022 David Dias Horta, Paul Meier")
 
 from argparse import ArgumentParser
 import argparse
+import asyncio
 import os
 import sys
 
@@ -16,7 +17,7 @@ import time
 from aiohttp import web
 from aiohttp_index import IndexMiddleware # type: ignore
 from asyncThread import asyncRunInThread
-from findShapes import contestBalloon
+from findShapes import findContestBalloon
 from lidar import LiDAR
 
 from rovex import Rover
@@ -79,7 +80,7 @@ async def setSpeedsHandler(request: web.Request) -> web.Response:
 
 async def getRecommendedSpeeds(_: web.Request) -> web.Response:
     """gets the recommended speeds (L, R)"""
-    speedL, speedR = contestBalloon(lidar.data.toJson())
+    speedL, speedR = findContestBalloon(lidar.data.toJson())
     print(f"speedL={speedL}, speedR={speedR}")
     return web.json_response(status = 200, data = {
         "speedL": speedL,
@@ -90,10 +91,11 @@ async def autoLoop(_: web.Application) -> None:
     """runs the contest balloon continuously"""
     def _implement() -> None:
         while True:
-            speedL, speedR = contestBalloon(lidar.data.toJson())
+            time.sleep(0.1) # 100 ms
+            speedL, speedR = findContestBalloon(lidar.data.toJson())
             print(f"speedL={speedL}, speedR={speedR}")
             rover.setSpeeds(speedL, speedR)
-    await asyncRunInThread(_implement)
+    asyncio.create_task(asyncRunInThread(_implement))
 
 app = web.Application(middlewares=[IndexMiddleware()])
 
