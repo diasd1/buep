@@ -83,8 +83,8 @@ async def getRecommendedSpeeds(_: web.Request) -> web.Response:
     speedL, speedR = findContestBalloon(lidar.data.toJson())
     print(f"speedL={speedL}, speedR={speedR}")
     return web.json_response(status = 200, data = {
-        "speedL": speedL,
-        "speedR": speedR
+        "speedL": speedL.value,
+        "speedR": speedR.value
     })
 
 async def autoLoop(_: web.Application) -> None:
@@ -94,7 +94,7 @@ async def autoLoop(_: web.Application) -> None:
             time.sleep(0.1) # 100 ms
             speedL, speedR = findContestBalloon(lidar.data.toJson())
             print(f"speedL={speedL}, speedR={speedR}")
-            rover.setSpeeds(speedL, speedR)
+            rover.setSpeeds(speedL.value, speedR.value)
     asyncio.create_task(asyncRunInThread(_implement))
 
 app = web.Application(middlewares=[IndexMiddleware()])
