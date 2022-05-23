@@ -71,13 +71,13 @@ def findContestBalloon(data: List[float],
 
 def _driveToCornerLeft(flat:Flat) -> Tuple[Speed, Speed]:
     if _angleDeviation(flat.endAngle, FRONT_ANGLE):
-        return Speed.D3, Speed.D3
-    return Speed.R2, Speed.D2
+        return Speed.D2, Speed.D2
+    return Speed.R1, Speed.D1
 
 def _driveToCornerRight(flat:Flat) -> Tuple[Speed, Speed]:
     if _angleDeviation(flat.startAngle, FRONT_ANGLE):
-        return Speed.D3, Speed.D3
-    return Speed.D2, Speed.R2
+        return Speed.D2, Speed.D2
+    return Speed.D1, Speed.R1
 
 
 def _angleDeviation(isAngle: int, shouldAngle: int) -> bool:
@@ -88,7 +88,7 @@ def _angleDeviation(isAngle: int, shouldAngle: int) -> bool:
 
 def _collisionDetection(data : List[float]) -> bool:
     collisonCone = 5
-    if data[FRONT_ANGLE + collisonCone] < STOP_DISTANCE or\
+    if data[FRONT_ANGLE + collisonCone] < STOP_DISTANCE and\
        data[FRONT_ANGLE - collisonCone] < STOP_DISTANCE:
         return False
     return True
