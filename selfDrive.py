@@ -38,6 +38,14 @@ class SelfDrive:
         self._rover.setSpeeds(Speed.N.value, Speed.N.value)
         return web.Response()
 
+    def _backAndTurnRight(self) -> None:
+        self._alternateAngle = not self._alternateAngle
+        self._rover.setSpeeds(Speed.R5.value, Speed.R5.value)
+        time.sleep(1)
+        self._rover.setSpeeds(Speed.D4.value,Speed.R4.value)
+        time.sleep(0.6)
+        self._rover.setSpeeds(Speed.N.value, Speed.N.value)
+
     async def startupTask(self, _: web.Application) -> None:
         """runs the contest balloon continuously"""
         def _implement() -> None:
@@ -50,12 +58,7 @@ class SelfDrive:
                 print(value)
                 if isinstance(value, tuple):
                     if Speed.I in value:
-                        self._alternateAngle = not self._alternateAngle
-                        self._rover.setSpeeds(Speed.R4.value, Speed.R4.value)
-                        time.sleep(1)
-                        self._rover.setSpeeds(Speed.D4.value,Speed.R4.value)
-                        time.sleep(0.5)
-                        self._rover.setSpeeds(Speed.N.value, Speed.N.value)
+                        self._backAndTurnRight()
                         continue
 
                     speedL, speedR = value
