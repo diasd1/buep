@@ -39,26 +39,26 @@ class SelfDrive:
         return web.Response()
 
     def _backAndExit(self) -> None:
-        self._alternateAngle = not self._alternateAngle
+        self._alternateAngle = False
         # back
         self._rover.setSpeeds(Speed.R5.value, Speed.R5.value)
-        time.sleep(0.5)
+        time.sleep(1.2)
         # turn
         self._rover.setSpeeds(Speed.D5.value, Speed.R5.value)
-        time.sleep(0.6)
+        time.sleep(0.7)
         # back
         self._rover.setSpeeds(Speed.D5.value, Speed.D5.value)
-        time.sleep(0.3)
+        time.sleep(2.5)
         self._rover.setSpeeds(Speed.N.value, Speed.N.value)
 
     def _backAndTurnRight(self) -> None:
-        self._alternateAngle = not self._alternateAngle
+        self._alternateAngle = True
         # back
         self._rover.setSpeeds(Speed.R5.value, Speed.R5.value)
-        time.sleep(0.8)
+        time.sleep(1.2)
         # turn
         self._rover.setSpeeds(Speed.D5.value, Speed.R5.value)
-        time.sleep(0.35)
+        time.sleep(0.5)
         # back
         self._rover.setSpeeds(Speed.R5.value, Speed.R5.value)
         time.sleep(0.3)
@@ -74,7 +74,7 @@ class SelfDrive:
                 time.sleep(0.2) # 200 ms
                 if not self._enabled:
                     continue
-                value = findContestBalloon(self._lidar.data.toJson(), self._alternateAngle)
+                value = findContestBalloon(self._lidar.data.toJson(), False)
                 print("#######################")
                 print(value)
                 if isinstance(value, tuple):

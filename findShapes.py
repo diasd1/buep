@@ -43,9 +43,9 @@ class Flat:
         return f"count={self.count} start={self.startAngle} \
 end={self.endAngle} dist={self._distance}"
 
-STOP_DISTANCE = 450
+STOP_DISTANCE = 225
 FRONT_ANGLE = 90
-ANGLE_DEVIATION = 15
+ANGLE_DEVIATION = 20
 
 def findContestBalloon(data: List[float],
                        direction: bool = False) -> Optional[Tuple[Speed, Speed]]:
@@ -73,14 +73,14 @@ def _driveToCornerLeft(flat:Flat) -> Optional[Tuple[Speed, Speed]]:
     if _angleDeviation(flat.endAngle, FRONT_ANGLE):
         return Speed.D2, Speed.D2
     if flat.endAngle > FRONT_ANGLE:
-        return Speed.R1, Speed.D1
+        return Speed.R2, Speed.D2
     return Speed.D1, Speed.R1
 
 def _driveToCornerRight(flat:Flat) -> Optional[Tuple[Speed, Speed]]:
     if _angleDeviation(flat.startAngle, FRONT_ANGLE):
         return Speed.D2, Speed.D2
-    if flat.startAngle > FRONT_ANGLE:
-        return Speed.D1, Speed.R1
+    if flat.startAngle < FRONT_ANGLE:
+        return Speed.D2, Speed.R2
     return Speed.R1, Speed.D1
 
 def _angleDeviation(isAngle: int, shouldAngle: int) -> bool:
