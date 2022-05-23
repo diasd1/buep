@@ -79,7 +79,7 @@ def _driveToCornerLeft(flat:Flat) -> Tuple[Speed, Speed]:
 def _driveToCornerRight(flat:Flat) -> Tuple[Speed, Speed]:
     if _angleDeviation(flat.startAngle, FRONT_ANGLE):
         return Speed.D2, Speed.D2
-    elif flat.startAngle < FRONT_ANGLE:
+    elif flat.startAngle > FRONT_ANGLE:
         return Speed.D1, Speed.R1
 
 def _angleDeviation(isAngle: int, shouldAngle: int) -> bool:
