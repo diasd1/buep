@@ -43,7 +43,7 @@ class Flat:
         return f"count={self.count} start={self.startAngle} \
 end={self.endAngle} dist={self._distance}"
 
-STOP_DISTANCE = 200
+STOP_DISTANCE = 150
 FRONT_ANGLE = 90
 ANGLE_DEVIATION = 15
 
@@ -51,6 +51,9 @@ def findContestBalloon(data : List[float],direction : bool = False   ) -> Option
     """tries to find a balloon for the contest"""
     flats = _getFlats(data)
     print(flats)
+
+    if not _collisionDetection(data):
+        return (Speed.I, )
 
     for count,flat in enumerate(flats):
         if flat.endAngle > FRONT_ANGLE > flat.startAngle:
@@ -61,8 +64,6 @@ def findContestBalloon(data : List[float],direction : bool = False   ) -> Option
         if count < len(flats) - 1:
             if _angleDeviation(((flats[count+1].startAngle-flat.endAngle)/2)+flat.endAngle, FRONT_ANGLE):
                 return Speed.D2, Speed.D2
-    if _collisionDetection(data):
-        return (Speed.I, )
     return None
 
 def _driveToCornerLeft(flat:Flat) -> Tuple[Speed, Speed]:
