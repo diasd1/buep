@@ -72,7 +72,7 @@ def findContestBalloon(data : List[float]) -> Tuple[Speed, Speed]:
         if flat.startAngle < FRONT_ANGLE < flat.endAngle:
             if data[FRONT_ANGLE] > 200:
                 _driveToCornerLeft(flat)
-        if count < len(flats):
+        if count < len(flats) - 1:
             if _angleDeviation(flat.startAngle, FRONT_ANGLE) and _angleDeviation(flats[count + 1], FRONT_ANGLE):
                 return Speed.D2,Speed.D2
     if data[FRONT_ANGLE] < 200:
