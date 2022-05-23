@@ -2,7 +2,7 @@
 """curiousLiDAR Shape finder"""
 __copyright__ = ("Copyright (c) 2022 David Dias Horta, Paul Meier")
 
-from typing import List, Tuple
+from typing import List, Optional, Tuple
 
 from rovex import Speed
 
@@ -45,7 +45,7 @@ end={self.endAngle} dist={self._distance}"
 
 FRONT_ANGLE = 90
 
-def findContestBalloon(data : List[float]) -> Tuple[Speed, Speed]:
+def findContestBalloon(data : List[float]) -> Optional[Tuple[Speed, Speed]]:
     """tries to find a balloon for the contest"""
     flats = _getFlats(data)
     print(flats)
@@ -60,7 +60,7 @@ def findContestBalloon(data : List[float]) -> Tuple[Speed, Speed]:
                 return Speed.D2,Speed.D2
     if data[FRONT_ANGLE] < 200:
         return Speed.N, Speed.N
-    return Speed.N, Speed.N
+    return None
 
 def _driveToCornerLeft(flat:Flat) -> Tuple[Speed, Speed]:
     if _angleDeviation(flat.endAngle,FRONT_ANGLE):

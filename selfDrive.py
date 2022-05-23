@@ -43,7 +43,9 @@ class SelfDrive:
                 time.sleep(0.2) # 200 ms
                 if not self._enabled:
                     continue
-                speedL, speedR = findContestBalloon(self._lidar.data.toJson())
-                print(f"speedL={speedL}, speedR={speedR}")
-                self._rover.setSpeeds(speedL.value, speedR.value)
+                value = findContestBalloon(self._lidar.data.toJson())
+                if isinstance(value, tuple):
+                    speedL, speedR = value
+                    print(f"speedL={speedL}, speedR={speedR}")
+                    self._rover.setSpeeds(speedL.value, speedR.value)
         asyncio.create_task(asyncRunInThread(_implement))

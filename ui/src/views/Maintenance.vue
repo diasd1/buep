@@ -8,25 +8,14 @@
                     <button @click="quit">Quit</button>
                 </div>
             </div>
-            <div class="settingsWrapper" style="transition-delay: 0.25s" :key="2">
-                <h4>Propose Direction</h4>
-                <div class="content">
-                    <button @click="getRecommendedSpeeds">GET</button>
-                    <div class="info">
-                        <p>Speed L: {{speedL}}</p>
-                        <p>Speed R: {{speedR}}</p>
-                    </div>
-                    <button @click="setSpeeds">Set for 1s</button>
-                </div>
-            </div>
-            <div class="settingsWrapper" style="transition-delay: 0.5s" :key="3">
+            <div class="settingsWrapper" style="transition-delay: 0.25s" :key="4">
                 <h4>Self Drive</h4>
                 <div class="content">
                     <button @click="enableAuto">ENABLE</button>
                     <button @click="disableAuto">DISABLE</button>
                 </div>
             </div>
-            <div class="settingsWrapper" style="transition-delay: 0.75s" :key="4">
+            <div class="settingsWrapper" style="transition-delay: 0.5s" :key="3">
                 <h4>Theme</h4>
                 <div class="content">
                     <span class="clickable material-symbols-rounded" :class="{ selected: !lightMode }">dark_mode</span>
