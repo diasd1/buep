@@ -19,6 +19,7 @@ class SelfDrive:
         self._rover = rover
         self._lidar = lidar
         self._enabled = default
+        self._alternateAngle = False
 
     @property
     def enabled(self) -> bool:
@@ -27,6 +28,7 @@ class SelfDrive:
 
     async def onEnableHandler(self, _: web.Request) -> web.Response:
         """enable selfDrive"""
+        self._alternateAngle = False
         self._enabled = True
         return web.Response()
 
@@ -43,8 +45,17 @@ class SelfDrive:
                 time.sleep(0.2) # 200 ms
                 if not self._enabled:
                     continue
-                value = findContestBalloon(self._lidar.data.toJson())
+                value = findContestBalloon(self._lidar.data.toJson(), self._alternateAngle)
                 if isinstance(value, tuple):
+                    if Speed.I in value:
+                        self._alternateAngle = not self._alternateAngle
+                        self._rover.setSpeeds(Speed.R4.value, Speed.R4.value)
+                        time.sleep(2)
+                        self._rover.setSpeeds(Speed.D4.value,Speed.R4.value)
+                        time.sleep(0.5)
+                        self._rover.setSpeeds(Speed.N.value, Speed.N.value)
+                        continue
+
                     speedL, speedR = value
                     print(f"speedL={speedL}, speedR={speedR}")
                     self._rover.setSpeeds(speedL.value, speedR.value)
