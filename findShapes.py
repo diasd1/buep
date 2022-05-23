@@ -2,8 +2,9 @@
 """curiousLiDAR Shape finder"""
 __copyright__ = ("Copyright (c) 2022 David Dias Horta, Paul Meier")
 
-from enum import Enum
 from typing import List, Tuple
+
+from rovex import Speed
 
 
 class Flat:
@@ -42,25 +43,6 @@ class Flat:
         return f"count={self.count} start={self.startAngle} \
 end={self.endAngle} dist={self._distance}"
 
-
-class Speed(Enum):
-    """defines the different speeds of the rover"""
-    D1 = 132 # drive
-    D2 = 139 # drive 2
-    D3 = 154 # drive 3
-    D4 = 174 # drive 4
-    D5 = 204 # drive 5
-    D6 = 255 # drive 6
-
-    R1 = 122 # reverse
-    R2 = 115 # reverse
-    R3 = 100 # reverse
-    R4 = 80 # reverse
-    R5 = 50 # reverse
-    R6 = 0 # reverse
-
-    N = 127 # neutral
-
 FRONT_ANGLE = 90
 
 def findContestBalloon(data : List[float]) -> Tuple[Speed, Speed]:
@@ -73,7 +55,8 @@ def findContestBalloon(data : List[float]) -> Tuple[Speed, Speed]:
             if data[FRONT_ANGLE] > 200:
                 _driveToCornerLeft(flat)
         if count < len(flats) - 1:
-            if _angleDeviation(flat.startAngle, FRONT_ANGLE) and _angleDeviation(flats[count + 1], FRONT_ANGLE):
+            if _angleDeviation(flat.startAngle, FRONT_ANGLE) and \
+               _angleDeviation(flats[count + 1].startAngle, FRONT_ANGLE):
                 return Speed.D2,Speed.D2
     if data[FRONT_ANGLE] < 200:
         return Speed.N, Speed.N
@@ -82,8 +65,7 @@ def findContestBalloon(data : List[float]) -> Tuple[Speed, Speed]:
 def _driveToCornerLeft(flat:Flat) -> Tuple[Speed, Speed]:
     if _angleDeviation(flat.endAngle,FRONT_ANGLE):
         return Speed.D2, Speed.D2
-    else:
-        return Speed.R2, Speed.D2
+    return Speed.R2, Speed.D2
 
 
 def _driveToCorner(flat: Flat) -> Tuple[Speed, Speed]:

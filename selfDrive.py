@@ -10,7 +10,7 @@ from aiohttp import web
 from asyncThread import asyncRunInThread
 from findShapes import findContestBalloon
 from lidar import LiDAR
-from rovex import Rover
+from rovex import Rover, Speed
 
 
 class SelfDrive:
@@ -33,7 +33,7 @@ class SelfDrive:
     async def onDisableHandler(self, _: web.Request) -> web.Response:
         """enable selfDrive"""
         self._enabled = False
-        self._rover.setSpeeds(0, 0)
+        self._rover.setSpeeds(Speed.N.value, Speed.N.value)
         return web.Response()
 
     async def startupTask(self, _: web.Application) -> None:

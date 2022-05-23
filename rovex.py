@@ -7,6 +7,25 @@ from typing import Optional
 import serial # type: ignore
 
 
+class Speed(Enum):
+    """defines the different speeds of the rover"""
+    D1 = 132 # drive
+    D2 = 139 # drive 2
+    D3 = 154 # drive 3
+    D4 = 174 # drive 4
+    D5 = 204 # drive 5
+    D6 = 255 # drive 6
+
+    R1 = 122 # reverse
+    R2 = 115 # reverse
+    R3 = 100 # reverse
+    R4 = 80 # reverse
+    R5 = 50 # reverse
+    R6 = 0 # reverse
+
+    N = 127 # neutral
+
+
 class InterfaceCmd(Enum):
     """usb to serial interface commands"""
     Config = 90
