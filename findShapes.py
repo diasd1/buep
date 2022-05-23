@@ -61,7 +61,8 @@ def findContestBalloon(data: List[float],
             if data[FRONT_ANGLE] > STOP_DISTANCE:
                 if direction:
                     return _driveToCornerRight(flat)
-                return _driveToCornerLeft(flat)
+                elif:
+                    return _driveToCornerLeft(flat)
         if count < len(flats) - 1:
             if _angleDeviation(
                     round((flats[count+1].startAngle-flat.endAngle) / 2) + flat.endAngle,
