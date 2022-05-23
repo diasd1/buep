@@ -43,9 +43,9 @@ class Flat:
         return f"count={self.count} start={self.startAngle} \
 end={self.endAngle} dist={self._distance}"
 
-STOP_DISTANCE = 350
+STOP_DISTANCE = 450
 FRONT_ANGLE = 90
-ANGLE_DEVIATION = 10
+ANGLE_DEVIATION = 15
 
 def findContestBalloon(data: List[float],
                        direction: bool = False) -> Optional[Tuple[Speed, Speed]]:
