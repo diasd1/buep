@@ -89,14 +89,14 @@ async def enableAuto(_: web.Request) -> web.Response:
 async def disableAuto(_: web.Request) -> web.Response:
     """disables 'auto'"""
     global autoRun
-    autoRun = True
+    autoRun = False
     return web.Response()
 
 async def autoLoop(_: web.Application) -> None:
     """runs the contest balloon continuously"""
     def _implement() -> None:
         while True:
-            time.sleep(0.2) # 100 ms
+            time.sleep(0.2) # 200 ms
             if not autoRun:
                 continue
             speedL, speedR = findContestBalloon(lidar.data.toJson())
