@@ -55,17 +55,17 @@ def findContestBalloon(data : List[float]) -> Optional[Tuple[Speed, Speed]]:
             if data[FRONT_ANGLE] > 200:
                 return _driveToCornerLeft(flat)
         if count < len(flats) - 1:
-            if _angleDeviation(flat.startAngle, FRONT_ANGLE) and \
+            if _angleDeviation(flat.endAngle, FRONT_ANGLE) and \
                _angleDeviation(flats[count + 1].startAngle, FRONT_ANGLE):
-                return Speed.D2,Speed.D2
+                return Speed.D2, Speed.D2
     if data[FRONT_ANGLE] < 200:
         return Speed.N, Speed.N
     return None
 
 def _driveToCornerLeft(flat:Flat) -> Tuple[Speed, Speed]:
     if _angleDeviation(flat.endAngle, FRONT_ANGLE):
-        return Speed.D2, Speed.D2
-    return Speed.R2, Speed.D2
+        return Speed.D1, Speed.D1
+    return Speed.R1, Speed.D1
 
 
 def _driveToCorner(flat: Flat) -> Tuple[Speed, Speed]:
@@ -85,7 +85,7 @@ def _driveToCorner(flat: Flat) -> Tuple[Speed, Speed]:
 
 def _angleDeviation(isAngle: int, shouldAngle: int) -> bool:
     """determines whether the deviation of two angles is acceptable"""
-    deviation = 10
+    deviation = 15
     if abs(isAngle - shouldAngle) <= deviation:
         return True
     return False
