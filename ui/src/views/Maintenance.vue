@@ -20,6 +20,13 @@
                 </div>
             </div>
             <div class="settingsWrapper" style="transition-delay: 0.5s" :key="3">
+                <h4>Automation</h4>
+                <div class="content">
+                    <button @click="enableAuto">ENABLE</button>
+                    <button @click="disableAuto">DISABLE</button>
+                </div>
+            </div>
+            <div class="settingsWrapper" style="transition-delay: 0.75s" :key="4">
                 <h4>Theme</h4>
                 <div class="content">
                     <span class="clickable material-symbols-rounded" :class="{ selected: !lightMode }">dark_mode</span>
@@ -47,6 +54,12 @@ export default defineComponent({
         },
         restart() {
             fetch("/system/reboot");
+        },
+        enableAuto() {
+            fetch("/auto/enable");
+        },
+        disableAuto() {
+            fetch("/auto/disable");
         },
         getRecommendedSpeeds() {
             fetch("/auto").then(x => x.json()).then(jdata => {

@@ -78,20 +78,27 @@ async def setSpeedsHandler(request: web.Request) -> web.Response:
     rover.setSpeeds(speedL, speedR)
     return web.Response()
 
-async def getRecommendedSpeeds(_: web.Request) -> web.Response:
-    """gets the recommended speeds (L, R)"""
-    speedL, speedR = findContestBalloon(lidar.data.toJson())
-    print(f"speedL={speedL}, speedR={speedR}")
-    return web.json_response(status = 200, data = {
-        "speedL": speedL.value,
-        "speedR": speedR.value
-    })
+autoRun = False
+
+async def enableAuto(_: web.Request) -> web.Response:
+    """enable 'auto'"""
+    global autoRun
+    autoRun = True
+    return web.Response()
+
+async def disableAuto(_: web.Request) -> web.Response:
+    """disables 'auto'"""
+    global autoRun
+    autoRun = True
+    return web.Response()
 
 async def autoLoop(_: web.Application) -> None:
     """runs the contest balloon continuously"""
     def _implement() -> None:
         while True:
-            time.sleep(0.1) # 100 ms
+            time.sleep(0.2) # 100 ms
+            if not autoRun:
+                continue
             speedL, speedR = findContestBalloon(lidar.data.toJson())
             print(f"speedL={speedL}, speedR={speedR}")
             rover.setSpeeds(speedL.value, speedR.value)
@@ -100,7 +107,8 @@ async def autoLoop(_: web.Application) -> None:
 app = web.Application(middlewares=[IndexMiddleware()])
 
 app.router.add_get('/data', getDataHandler)
-app.router.add_get('/auto', getRecommendedSpeeds)
+app.router.add_get('/auto/enable', enableAuto)
+app.router.add_get('/auto/disable', disableAuto)
 app.router.add_get('/system/exit', exitHandler)
 app.router.add_get('/system/reboot', restartHandler)
 app.router.add_post('/rover/speed', setSpeedsHandler)
