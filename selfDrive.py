@@ -43,7 +43,7 @@ class SelfDrive:
         self._rover.setSpeeds(Speed.R5.value, Speed.R5.value)
         time.sleep(1)
         self._rover.setSpeeds(Speed.D5.value, Speed.R5.value)
-        time.sleep(0.6)
+        time.sleep(0.4)
         self._rover.setSpeeds(Speed.N.value, Speed.N.value)
 
     async def startupTask(self, _: web.Application) -> None:

@@ -43,7 +43,7 @@ class Flat:
         return f"count={self.count} start={self.startAngle} \
 end={self.endAngle} dist={self._distance}"
 
-STOP_DISTANCE = 150
+STOP_DISTANCE = 200
 FRONT_ANGLE = 90
 ANGLE_DEVIATION = 15
 
@@ -56,7 +56,7 @@ def findContestBalloon(data: List[float],
     if not _collisionDetection(data):
         return (Speed.I, Speed.I)
 
-    for count,flat in enumerate(flats):
+    for count, flat in enumerate(flats):
         if flat.endAngle > FRONT_ANGLE > flat.startAngle:
             if data[FRONT_ANGLE] > STOP_DISTANCE:
                 if direction:
@@ -71,12 +71,12 @@ def findContestBalloon(data: List[float],
 
 def _driveToCornerLeft(flat:Flat) -> Tuple[Speed, Speed]:
     if _angleDeviation(flat.endAngle, FRONT_ANGLE):
-        return Speed.D2, Speed.D2
+        return Speed.D3, Speed.D3
     return Speed.R2, Speed.D2
 
 def _driveToCornerRight(flat:Flat) -> Tuple[Speed, Speed]:
     if _angleDeviation(flat.startAngle, FRONT_ANGLE):
-        return Speed.D2, Speed.D2
+        return Speed.D3, Speed.D3
     return Speed.D2, Speed.R2
 
 
@@ -107,14 +107,13 @@ def _getFlats(data: List[float]) -> List[Flat]:
         if 0 < angle < len(data) - 3:
             deltaDistance =abs(data[angle] - data[angle-1])
             if deltaDistance < thresholdDist:
-                count +=1
-                #print(deltaDistance , angle)
+                count += 1
             else:
                 previousDist = abs(data[angle-1])
                 if abs(previousDist - data[angle+3]) > thresholdDist:
                     if count > thresholdAngle:
                         foundFlats.append(Flat(count, startAngle, angle, point))
-                    startAngle = angle+1
+                    startAngle = angle + 1
                     count = 0
     return foundFlats
 
