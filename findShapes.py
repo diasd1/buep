@@ -47,13 +47,14 @@ STOP_DISTANCE = 150
 FRONT_ANGLE = 90
 ANGLE_DEVIATION = 15
 
-def findContestBalloon(data : List[float],direction : bool = False   ) -> Optional[Tuple[Speed, Speed]]:
+def findContestBalloon(data: List[float],
+                       direction: bool = False) -> Optional[Tuple[Speed, Speed]]:
     """tries to find a balloon for the contest"""
     flats = _getFlats(data)
     print(flats)
 
     if not _collisionDetection(data):
-        return (Speed.I, )
+        return (Speed.I, Speed.I)
 
     for count,flat in enumerate(flats):
         if flat.endAngle > FRONT_ANGLE > flat.startAngle:
@@ -62,7 +63,9 @@ def findContestBalloon(data : List[float],direction : bool = False   ) -> Option
                     return _driveToCornerRight(flat)
                 return _driveToCornerLeft(flat)
         if count < len(flats) - 1:
-            if _angleDeviation(((flats[count+1].startAngle-flat.endAngle)/2)+flat.endAngle, FRONT_ANGLE):
+            if _angleDeviation(
+                    round((flats[count+1].startAngle-flat.endAngle) / 2) + flat.endAngle,
+                    FRONT_ANGLE):
                 return Speed.D2, Speed.D2
     return None
 
@@ -85,7 +88,8 @@ def _angleDeviation(isAngle: int, shouldAngle: int) -> bool:
 
 def _collisionDetection(data : List[float]) -> bool:
     collisonCone = 5
-    if data[FRONT_ANGLE + collisonCone] < STOP_DISTANCE or data[FRONT_ANGLE - collisonCone] < STOP_DISTANCE:
+    if data[FRONT_ANGLE + collisonCone] < STOP_DISTANCE or\
+       data[FRONT_ANGLE - collisonCone] < STOP_DISTANCE:
         return False
     return True
 
