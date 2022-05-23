@@ -58,7 +58,7 @@ class SelfDrive:
         time.sleep(0.5)
         # turn
         self._rover.setSpeeds(Speed.D5.value, Speed.R5.value)
-        time.sleep(0.4)
+        time.sleep(0.3)
         # back
         self._rover.setSpeeds(Speed.R5.value, Speed.R5.value)
         time.sleep(0.3)
