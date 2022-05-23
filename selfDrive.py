@@ -38,6 +38,19 @@ class SelfDrive:
         self._rover.setSpeeds(Speed.N.value, Speed.N.value)
         return web.Response()
 
+    def _backAndExit(self) -> None:
+        self._alternateAngle = not self._alternateAngle
+        # back
+        self._rover.setSpeeds(Speed.R5.value, Speed.R5.value)
+        time.sleep(0.5)
+        # turn
+        self._rover.setSpeeds(Speed.D5.value, Speed.R5.value)
+        time.sleep(0.6)
+        # back
+        self._rover.setSpeeds(Speed.D5.value, Speed.D5.value)
+        time.sleep(0.3)
+        self._rover.setSpeeds(Speed.N.value, Speed.N.value)
+
     def _backAndTurnRight(self) -> None:
         self._alternateAngle = not self._alternateAngle
         # back
@@ -64,6 +77,11 @@ class SelfDrive:
                 print(value)
                 if isinstance(value, tuple):
                     if Speed.I in value:
+                        if self._alternateAngle:
+                            self._enabled = True
+                            self._backAndExit()
+                            continue
+
                         self._backAndTurnRight()
                         continue
 
