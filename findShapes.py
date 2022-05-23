@@ -43,7 +43,7 @@ class Flat:
         return f"count={self.count} start={self.startAngle} \
 end={self.endAngle} dist={self._distance}"
 
-STOP_DISTANCE = 500
+STOP_DISTANCE = 200
 FRONT_ANGLE = 90
 ANGLE_DEVIATION = 15
 
@@ -60,7 +60,7 @@ def findContestBalloon(data : List[float],direction : bool = False   ) -> Option
                 return _driveToCornerLeft(flat)
         if count < len(flats) - 1:
             if _angleDeviation(((flats[count+1].startAngle-flat.endAngle)/2)+flat.endAngle, FRONT_ANGLE):
-                if abs(flats[count+1].startAngle-flat.endAngle) < ANGLE_DEVIATION:
+                if abs(flats[count+1].startAngle-flat.endAngle) < 5:
                     return Speed.I
                 return Speed.D2, Speed.D2
     if data[FRONT_ANGLE] < STOP_DISTANCE:
