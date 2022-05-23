@@ -61,7 +61,7 @@ def findContestBalloon(data : List[float],direction : bool = False   ) -> Option
         if count < len(flats) - 1:
             if _angleDeviation(((flats[count+1].startAngle-flat.endAngle)/2)+flat.endAngle, FRONT_ANGLE):
                 return Speed.D2, Speed.D2
-    if data[FRONT_ANGLE] < STOP_DISTANCE:
+    if _collisionDetection(data):
         return Speed.I
     return None
 
@@ -81,6 +81,12 @@ def _angleDeviation(isAngle: int, shouldAngle: int) -> bool:
     if abs(isAngle - shouldAngle) <= ANGLE_DEVIATION:
         return True
     return False
+
+def _collisionDetection(data : List[float]) -> bool:
+    collisonCone = 5
+    if data[FRONT_ANGLE + collisonCone] < STOP_DISTANCE or data[FRONT_ANGLE - collisonCone] < STOP_DISTANCE:
+        return False
+    return True
 
 def _getFlats(data: List[float]) -> List[Flat]:
     """gets all flats"""
