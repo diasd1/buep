@@ -25,6 +25,8 @@ class Speed(Enum):
 
     N = 127 # neutral
 
+    I = -1 # invalid
+
 
 class InterfaceCmd(Enum):
     """usb to serial interface commands"""
