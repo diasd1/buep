@@ -78,7 +78,7 @@ class SelfDrive:
                 if isinstance(value, tuple):
                     if Speed.I in value:
                         if self._alternateAngle:
-                            self._enabled = True
+                            self._enabled = False
                             self._backAndExit()
                             continue
 
