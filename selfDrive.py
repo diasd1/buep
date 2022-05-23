@@ -46,11 +46,13 @@ class SelfDrive:
                 if not self._enabled:
                     continue
                 value = findContestBalloon(self._lidar.data.toJson(), self._alternateAngle)
+                print("#######################")
+                print(value)
                 if isinstance(value, tuple):
                     if Speed.I in value:
                         self._alternateAngle = not self._alternateAngle
                         self._rover.setSpeeds(Speed.R4.value, Speed.R4.value)
-                        time.sleep(2)
+                        time.sleep(1)
                         self._rover.setSpeeds(Speed.D4.value,Speed.R4.value)
                         time.sleep(0.5)
                         self._rover.setSpeeds(Speed.N.value, Speed.N.value)
