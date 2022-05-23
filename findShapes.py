@@ -59,12 +59,10 @@ def findContestBalloon(data : List[float],direction : bool = False   ) -> Option
                     return _driveToCornerRight(flat)
                 return _driveToCornerLeft(flat)
         if count < len(flats) - 1:
-            if abs(flats[count+1].startAngle-flat.endAngle) < 5:
-                    return Speed.I
             if _angleDeviation(((flats[count+1].startAngle-flat.endAngle)/2)+flat.endAngle, FRONT_ANGLE):
                 return Speed.D2, Speed.D2
     if data[FRONT_ANGLE] < STOP_DISTANCE:
-        return Speed.N, Speed.N
+        return Speed.I
     return None
 
 def _driveToCornerLeft(flat:Flat) -> Tuple[Speed, Speed]:
