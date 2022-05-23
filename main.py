@@ -4,11 +4,10 @@ __copyright__ = ("Copyright (c) 2022 David Dias Horta, Paul Meier")
 
 # on windows:
 #   mypy .
-#   pylint main.py lidar.py rovex.py asyncThread.py findShapes.py
+#   pylint main.py lidar.py rovex.py asyncThread.py findShapes.py selfDrive.py
 
 from argparse import ArgumentParser
 import argparse
-import asyncio
 import os
 import sys
 
@@ -16,17 +15,20 @@ import time
 
 from aiohttp import web
 from aiohttp_index import IndexMiddleware # type: ignore
-from asyncThread import asyncRunInThread
-from findShapes import findContestBalloon
 from lidar import LiDAR
 
 from rovex import Rover
+from selfDrive import SelfDrive
 
 argumentParser = ArgumentParser(description="Python Basic Webserver")
 
 argumentParser.add_argument("-b", "--bypass-timeout",
     action=argparse.BooleanOptionalAction, # type: ignore
     help="bypass startup timeout")
+
+argumentParser.add_argument("-d", "--enable-self-drive",
+    action=argparse.BooleanOptionalAction, # type: ignore
+    help="enable self drive")
 
 argumentParser.add_argument("-p", "--port",
     required=False,
@@ -54,6 +56,7 @@ else:
 
 rover = Rover(arguments.rover)
 lidar = LiDAR(arguments.lidar)
+selfDrive = SelfDrive(rover, lidar, arguments.enable_self_drive)
 
 async def getDataHandler(_: web.Request) -> web.Response:
     """gets the current LiDAR data"""
@@ -78,37 +81,11 @@ async def setSpeedsHandler(request: web.Request) -> web.Response:
     rover.setSpeeds(speedL, speedR)
     return web.Response()
 
-autoRun = False
-
-async def enableAuto(_: web.Request) -> web.Response:
-    """enable 'auto'"""
-    global autoRun
-    autoRun = True
-    return web.Response()
-
-async def disableAuto(_: web.Request) -> web.Response:
-    """disables 'auto'"""
-    global autoRun
-    autoRun = False
-    return web.Response()
-
-async def autoLoop(_: web.Application) -> None:
-    """runs the contest balloon continuously"""
-    def _implement() -> None:
-        while True:
-            time.sleep(0.2) # 200 ms
-            if not autoRun:
-                continue
-            speedL, speedR = findContestBalloon(lidar.data.toJson())
-            print(f"speedL={speedL}, speedR={speedR}")
-            rover.setSpeeds(speedL.value, speedR.value)
-    asyncio.create_task(asyncRunInThread(_implement))
-
 app = web.Application(middlewares=[IndexMiddleware()])
 
 app.router.add_get('/data', getDataHandler)
-app.router.add_get('/auto/enable', enableAuto)
-app.router.add_get('/auto/disable', disableAuto)
+app.router.add_get('/auto/enable', selfDrive.onEnableHandler)
+app.router.add_get('/auto/disable', selfDrive.onDisableHandler)
 app.router.add_get('/system/exit', exitHandler)
 app.router.add_get('/system/reboot', restartHandler)
 app.router.add_post('/rover/speed', setSpeedsHandler)
@@ -116,5 +93,5 @@ app.router.add_post('/rover/speed', setSpeedsHandler)
 app.router.add_static('/', './ui/dist')
 
 app.on_startup.append(lidar.startupTask)
-app.on_startup.append(autoLoop)
+app.on_startup.append(selfDrive.startupTask)
 web.run_app(app, port = arguments.port)

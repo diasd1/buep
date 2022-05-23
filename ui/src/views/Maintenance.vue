@@ -20,7 +20,7 @@
                 </div>
             </div>
             <div class="settingsWrapper" style="transition-delay: 0.5s" :key="3">
-                <h4>Automation</h4>
+                <h4>Self Drive</h4>
                 <div class="content">
                     <button @click="enableAuto">ENABLE</button>
                     <button @click="disableAuto">DISABLE</button>
