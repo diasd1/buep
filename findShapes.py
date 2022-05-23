@@ -43,7 +43,9 @@ class Flat:
         return f"count={self.count} start={self.startAngle} \
 end={self.endAngle} dist={self._distance}"
 
+STOP_DISTANCE = 500
 FRONT_ANGLE = 90
+ANGLE_DEVIATION = 15
 
 def findContestBalloon(data : List[float]) -> Optional[Tuple[Speed, Speed]]:
     """tries to find a balloon for the contest"""
@@ -52,13 +54,12 @@ def findContestBalloon(data : List[float]) -> Optional[Tuple[Speed, Speed]]:
 
     for count,flat in enumerate(flats):
         if flat.endAngle > FRONT_ANGLE > flat.startAngle:
-            if data[FRONT_ANGLE] > 200:
+            if data[FRONT_ANGLE] > STOP_DISTANCE:
                 return _driveToCornerLeft(flat)
         if count < len(flats) - 1:
-            if _angleDeviation(flat.endAngle, FRONT_ANGLE) and \
-               _angleDeviation(flats[count + 1].startAngle, FRONT_ANGLE):
+            if _angleDeviation(((flats[count+1].startAngle-flat.endAngle)/2)+flat.endAngle, FRONT_ANGLE):
                 return Speed.D2, Speed.D2
-    if data[FRONT_ANGLE] < 200:
+    if data[FRONT_ANGLE] < STOP_DISTANCE:
         return Speed.N, Speed.N
     return None
 
@@ -67,26 +68,15 @@ def _driveToCornerLeft(flat:Flat) -> Tuple[Speed, Speed]:
         return Speed.D1, Speed.D1
     return Speed.R1, Speed.D1
 
-
-def _driveToCorner(flat: Flat) -> Tuple[Speed, Speed]:
-    """determines the speeds (L)"""
-    if (abs(flat.startAngle-flat.endAngle)/2) + flat.startAngle >= FRONT_ANGLE:
-        if _angleDeviation(flat.startAngle, FRONT_ANGLE):
-            return Speed.D1, Speed.D1
-        if flat.startAngle < FRONT_ANGLE:
-            return Speed.R1, Speed.D1
-    elif (abs(flat.startAngle-flat.endAngle)/2) + flat.startAngle < FRONT_ANGLE:
-        if _angleDeviation(flat.startAngle, FRONT_ANGLE):
-            return Speed.D1, Speed.D1
-        if flat.startAngle < FRONT_ANGLE:
-            return Speed.D1, Speed.R1
-    return Speed.N, Speed.N
+def _driveToCornerRight(flat:Flat) -> Tuple[Speed, Speed]:
+    if _angleDeviation(flat.startAngle, FRONT_ANGLE):
+        return Speed.D1, Speed.D1
+    return Speed.D1, Speed.R1
 
 
 def _angleDeviation(isAngle: int, shouldAngle: int) -> bool:
     """determines whether the deviation of two angles is acceptable"""
-    deviation = 15
-    if abs(isAngle - shouldAngle) <= deviation:
+    if abs(isAngle - shouldAngle) <= ANGLE_DEVIATION:
         return True
     return False
 
