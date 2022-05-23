@@ -42,7 +42,7 @@ class SelfDrive:
         self._alternateAngle = not self._alternateAngle
         self._rover.setSpeeds(Speed.R5.value, Speed.R5.value)
         time.sleep(1)
-        self._rover.setSpeeds(Speed.D4.value,Speed.R4.value)
+        self._rover.setSpeeds(Speed.D5.value, Speed.R5.value)
         time.sleep(0.6)
         self._rover.setSpeeds(Speed.N.value, Speed.N.value)
 
