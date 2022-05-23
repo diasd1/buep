@@ -1,11 +1,41 @@
 <template>
   <div class="home">
     <div class="upperHome">
-      <h1>curious<span class="accent">LiDAR</span></h1>
+      <h1>
+        <transition-group name="list" appear>
+          <span v-for="(letter, index) in 'curious'" :key="index" :style="{'transition-delay': `${index * 0.05}s`}">{{letter}}</span>
+        </transition-group>
+        <span class="accent">
+          <transition-group name="list" appear>
+            <span v-for="(letter, index) in 'LiDAR'" :key="index" :style="{'transition-delay': `${index * 0.05}s`}">{{letter}}</span>
+          </transition-group>
+        </span>
+      </h1>
       <div class="button"><RouterLink class="link" to="/control">Get Started!</RouterLink></div>
     </div>
   </div>
 </template>
+
+<style>
+.list-move, /* apply transition to moving elements */
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(1em);
+}
+
+/* ensure leaving items are taken out of layout flow so that moving
+   animations can be calculated correctly. */
+.list-leave-active {
+  position: absolute;
+}
+</style>
+
 <style lang="scss" scoped>
   .justifyBottom {
     justify-self: flex-end;
@@ -30,10 +60,15 @@
     justify-content: center;
     align-items: center;
     width: 100%;
+
+    h1 {
+      display: flex;
+      flex-direction: row;
+    }
   }
 
   span.accent {
-    background: -webkit-linear-gradient(45deg, var(--red), #4b00ed);
+    background: var(--gradient);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -79,7 +114,9 @@
       .link {
         font-weight: bold;
         font-size: 2em;
-        color: var(--red);
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
       }
 
       cursor: pointer;

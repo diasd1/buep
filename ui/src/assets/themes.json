@@ -1,0 +1,43 @@
+{
+    "light-background": {
+        "default": "#f3f7fb",
+        "dark": "#21262a"
+    },
+    "text-main": {
+        "default": "#181c2f",
+        "dark": "#fff"
+    },
+    "border": {
+        "default": "#dadbdc",
+        "dark": "#2a3036"
+    },
+    "default-container-background": {
+        "default": "#fff",
+        "dark": "#16191c"
+    },
+    "red": {
+        "default": "#dc0000"
+    },
+    "blue": {
+        "default": "#607cd8"
+    },
+    "green": {
+        "default": "#64aa67"
+    },
+    "disabled": {
+        "default": "#8b8c91",
+        "dark": "#8e92a3"
+    },
+    "hover": {
+        "default": "#E3E7EB",
+        "dark": "hsla(0,0%,100%,0.1)"
+    },
+    "disabled-contrast": {
+        "default": "rgba(255, 255, 255, 0.5)",
+        "dark": "rgba(0, 0, 0, 0.5)"
+    },
+    "gradient": {
+        "default": "-webkit-linear-gradient(0deg, var(--red), #4b00ed)",
+        "dark": "-webkit-linear-gradient(0deg, var(--red), #4545ed)"
+    }
+}

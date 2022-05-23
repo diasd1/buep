@@ -1,11 +1,25 @@
 <template>
     <div class="wrapper">
-        <div class="row" v-for="(element, index) in distances" :key="index">
-            <span class="angle">{{index}} °</span>
-            <span class="distance">{{element}} mm</span>
-        </div>
+        <transition-group name="list" appear>
+            <div class="row" v-for="(element, index) in distances" :key="index" :style="{'transition-delay': `${index * 0.02}s`}">
+                <span class="angle">{{index}} °</span>
+                <span class="distance">{{element}} mm</span>
+            </div>
+        </transition-group>
     </div>
 </template>
+
+<style>
+.list-enter-active,
+.list-leave-active {
+  transition: all .5s ease;
+}
+.list-enter-from,
+.list-leave-to {
+  opacity: 0;
+  transform: translateY(1em);
+}
+</style>
 
 <script lang="ts">
 import { defineComponent } from 'vue'
@@ -52,7 +66,7 @@ export default defineComponent({
             border-radius: 5px;
 
             &:hover {
-                background: var(--light-background);
+                background: var(--hover);
             }
         }
     }

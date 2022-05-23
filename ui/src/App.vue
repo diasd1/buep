@@ -3,7 +3,7 @@
         <div class="header">
             <div class="title">
                 <img src="/src/assets/favicon.png">
-                <RouterLink class="rLink" to="/">curious<span class="accent">LiDAR</span></RouterLink>
+                <RouterLink class="rLink noBorder" to="/">curious<span class="accent">LiDAR</span></RouterLink>
             </div>
             <div class="links">
                 <RouterLink class="rLink" to="/">Home</RouterLink>
@@ -13,7 +13,11 @@
             </div>
         </div>
         <div class="view">
-            <RouterView />
+            <router-view v-slot="{ Component, route }">
+                <transition name="slide-fade">
+                    <component :is="Component" :key="route.path" />
+                </transition>
+            </router-view>
         </div>
         <div class="lowerHome">
             <div class="bottomWrapper">
@@ -24,22 +28,47 @@
     </div>
 </template>
 
+<script>
+import themes from "/src/assets/themes.json";
+
+const LOCAL_STORAGE_KEY = "theme" // change it to whatever you like
+
+window.getThemes = () => { // returns a string array of all available themes
+    window.themes = Object.keys(themes[Object.keys(themes)[0]]);
+    return window.themes;
+}
+
+window.getCurrentTheme = () => {
+    return window.localStorage.getItem(LOCAL_STORAGE_KEY) || "default"
+}
+
+window.setTheme = (theme) => { // accepts a string (theme name)
+    if (!window.getThemes().includes(theme))
+    {
+        return;
+    }
+
+    window.localStorage.setItem(LOCAL_STORAGE_KEY, theme)
+    for (const key of Object.keys(themes))
+    {
+        document.documentElement.style.setProperty(`--${key}`, themes[key][theme] || themes[key]["default"]);
+    }
+}
+
+window.setTheme(window.localStorage.getItem(LOCAL_STORAGE_KEY) || "default") // optional, loads the default theme
+
+export default {
+    
+}
+</script>
+
 <style lang="scss">
     @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300&display=swap');
 
     :root {
-        --light-background: #21262a;
-        --text-main: #fff;
-        --default-container-background: #16191c;
-        --disabled: #8e92a3;
-        --blue: #607cd8;
-        --red: #dc0000;
-        --green: #64aa67;
-        --border: #2a3036;
-
         --font-family: 'Poppins', sans-serif;
 
-        --max-container-height: calc(100vh - 20px - 25px - 41px);
+        --max-container-height: calc(100vh - 20px - 25px - 42px - 20px);
     }
 
     /* width */
@@ -105,40 +134,60 @@
             display: flex;
             flex-direction: row;
             justify-content: space-between;
+            align-items: stretch;
             padding: 0 200px;
+
+            .links {
+                display: flex;
+                flex-direction: row;
+                align-items: stretch;
+            }
 
             .rLink {
                 color: var(--text-main);
+                margin: 0;
                 text-decoration: none;
+                height: 100%;
+                position: relative;
+                transition: color .25s;
 
-                &.router-link-active {
+                &.router-link-active:not(.noBorder) {
+                    border-bottom: 1px solid var(--red);
+                }
+
+                padding: 0px 10px;
+
+                &:hover {
                     color: var(--red);
-                }
-
-                &:not(:last-child) {
-                    /*border-right: 1px solid var(--border);*/
-                    padding: 0px 10px;
-                }
-
-                &:first-child {
-                    padding-left: 0px;
-                }
-
-                &:last-child {
-                    padding-left: 10px;
                 }
             }
         }
 
         .view {
             flex: 1;
+            max-width: 100vw;
+            overflow: hidden;
+            max-height: calc(100vh - 30px - 20px - 42px - 5px);
         }
     }
 </style>
 
+<style>
+  .slide-fade-enter-active {
+    transition: all .5s ease-out;
+  }
+  .slide-fade-enter-from,
+  .slide-fade-leave-to {
+    transform: translateY(1em);
+    opacity: 0;
+  }
+</style>
+
 <style scoped lang="scss">
     .accent {
-        color: var(--red);
+        background: var(--gradient);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
     }
 
     .lowerHome {
